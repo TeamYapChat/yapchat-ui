@@ -8,8 +8,8 @@ const LoginPage = () => {
 
   const handleOnclick = () => {
     const data : LoginDataType = {
-      userName: "nguyenthithanhhuong",
-      passWord: "KimCuc@123!"
+      userName: "asdasd",
+      passWord: "asdasd"
     }
     dispatch(fetchAsyncLoginUsers(data));
   }
