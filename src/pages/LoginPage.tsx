@@ -25,14 +25,14 @@ const LoginPage = () => {
   };
 
   return (    
-  <main className='grid place-items-center h-screen w-full overflow-hidden px-10'>
+  <main className='grid place-items-center h-screen w-full overflow-hidden md:px-10 px-4'>
     <img src={background} className='absolute inset-0 object-cover w-full h-full -z-20'/>
     {/* Login Form Section */}
     <section className='h-screen w-full flex flex-col justify-center items-center'>
-      <form className='relative flex flex-col gap-4 items-start justify-center max-w-md w-full rounded-3xl backdrop-blur-2xl full-shadow py-10 px-10'>
+      <form className='relative flex flex-col gap-4 items-start justify-center max-w-md w-full md:rounded-3xl rounded-xl backdrop-blur-2xl full-shadow md:py-10 md:px-10 p-6'>
         {/* Title */}
-        <h1 className='text-3xl font-semibold self-center'>Login</h1>
-        <span className='text-gray-500 self-center text-lg mb-10'>Welcome back, Yapper !</span>
+        <h1 className='md:text-3xl text-2xl font-semibold self-center'>Login</h1>
+        <span className='text-gray-500 self-center md:text-lg md:mb-10 mb-4'>Welcome back, Yapper !</span>
         
         <label className="input input-bordered flex items-center gap-2 w-full">
         <svg
@@ -61,7 +61,7 @@ const LoginPage = () => {
         </label>
 
         {/* Using flex to avoid resizing height caused by Daisy loading */}
-        <button className='flex items-center justify-center bg-black text-white p-4 rounded-2xl w-full mt-8' 
+        <button className='flex items-center justify-center bg-black text-white p-4 rounded-2xl w-full md:mt-8 my-4' 
                 onClick={handleOnclick}
                 disabled={isFetching}>
           {isFetching ? <span className="loading loading-dots loading-md p-0"></span> : "Login"}
