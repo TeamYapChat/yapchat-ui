@@ -1,13 +1,17 @@
 import { useDispatch } from 'react-redux'
-import { login, } from '../features/auth/authSlice'
-import { useState } from 'react'
+import { fetchAsyncLoginUsers } from '../features/auth/authSlice'
+import { LoginDataType } from '../types/authType';
+import { AppDispatch } from '../features/store';
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
-  const [email, setEmail] = useState('')
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleOnclick = () => {
-    dispatch(login({user: {id: '1', email: email}, token: '123'}))
+    const data : LoginDataType = {
+      userName: "nguyenthithanhhuong",
+      passWord: "KimCuc@123!"
+    }
+    dispatch(fetchAsyncLoginUsers(data));
   }
   return (    
   <main className='grid place-items-center h-screen'>
@@ -23,7 +27,7 @@ const LoginPage = () => {
           <path
             d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
         </svg>
-        <input type="text" className="grow" placeholder="Email" onChange={(e) => {setEmail(e.target.value)}}/>
+        <input type="text" className="grow" placeholder="Email" />
       </label>
 
       <button onClick={handleOnclick}>Log in</button>

@@ -6,6 +6,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import { store } from './features/store.ts';
 
+import { injectStore } from './api/axiosConfig.js'
+
+injectStore(store);
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
