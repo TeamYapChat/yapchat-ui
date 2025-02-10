@@ -1,12 +1,13 @@
 import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
 import { isTokenValid } from '../ultils/tokenUltils'; 
-import { AuthResponse, LoginDataType } from '../../types/authType';
+import { AuthResponse, LoginDataType, RegisterDataType, RegisterResponse } from '../../types/authType';
 import authApis from '../../api/authApis';
+import { UserData } from '../../types/userData';
 
 // Type definitions
 interface AuthState {
     isAuthenticated: boolean;
-    user: {id: string; email: string} | null;
+    user: UserData | null;
     isLoading: boolean;
     error: string | null;
 }
@@ -28,6 +29,15 @@ export const fetchAsyncLoginUsers = createAsyncThunk<AuthResponse,LoginDataType>
     }
 )
 
+// Async thunk for register
+export const fetchAsyncRegisterUsers = createAsyncThunk<RegisterResponse,RegisterDataType>(
+    'auth/register',
+    async (registerData: RegisterDataType) => {
+        const response = await authApis.signup(registerData) as RegisterResponse;
+        return response;
+    }
+)
+
 // Slice
 const authSlice = createSlice({
     name: 'auth',
@@ -40,6 +50,12 @@ const authSlice = createSlice({
                 isAuthenticated: false,
                 user: null,
             }
+        },
+        acceptLogin: (state) => {
+            return{
+                ...state,
+                isAuthenticated: true,
+            }
         }
     },
     extraReducers: (builder) => {
@@ -48,11 +64,16 @@ const authSlice = createSlice({
         });
         builder.addCase(fetchAsyncLoginUsers.fulfilled, (state, action:  PayloadAction<AuthResponse>) => {
             state.isLoading = false;
-            if (action.payload.dataResult?.accessToken) {
-                localStorage.setItem('token', action.payload.dataResult.accessToken);
-                state.isAuthenticated = true;
+            if (action.payload.success && "data" in action.payload) {
+                const accessToken = action.payload.data;
+                if (accessToken) {
+                    localStorage.setItem('token', accessToken);
+                    state.isAuthenticated = true;
+                } else {
+                    state.error = "Access token is missing";
+                }
             } else {
-                state.error = "Access token is missing";
+                state.error = action.payload.message || "Authentication failed";
             }
         });
         builder.addCase(fetchAsyncLoginUsers.rejected, (state, action) => {
@@ -60,9 +81,29 @@ const authSlice = createSlice({
             state.isLoading = false;
             state.isAuthenticated = false;
         });
+        builder.addCase(fetchAsyncRegisterUsers.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(fetchAsyncRegisterUsers.fulfilled, (state, action: PayloadAction<RegisterResponse>) => {
+            state.isLoading = false;
+            if (action.payload.success && "data" in action.payload) {
+                const userData = action.payload.data;
+                if (userData) {
+                    state.user = userData;
+                } else {
+                    state.error = "User data is missing";
+                }
+            } else {
+                state.error = action.payload.message || "Registration failed";
+            }
+        });
+        builder.addCase(fetchAsyncRegisterUsers.rejected, (state, action) => {
+            state.error = action.error.message || 'Failed to register';
+            state.isLoading = false;
+        });
     }
 })
 
-export const { logout } = authSlice.actions;
+export const { logout, acceptLogin } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,11 +1,15 @@
 import axiosInstance from "./axiosConfig";
-import { AuthResponse, LoginDataType } from "../types/authType";
+import { AuthResponse, LoginDataType, RegisterDataType, RegisterResponse } from "../types/authType";
 
 const authApis = {
     login: async(data: LoginDataType) => {
-        const response = await axiosInstance.post('/api/auth/login', data) as AuthResponse;
-        return response;
-    }
+        const response = await axiosInstance.post<AuthResponse>('auth/login', data);
+        return response.data;
+    },
+    signup: async(data: RegisterDataType) => {
+        const response = await axiosInstance.post<RegisterResponse>('auth/register', data);
+        return response.data;
+    },
 }
 
 export default authApis;

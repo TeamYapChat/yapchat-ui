@@ -1,19 +1,25 @@
+import { UserData } from "./userData";
+
 interface LoginDataType {
-    userName: string;
-    passWord: string;
+    email: string;
+    password: string;
 }
 interface RegisterDataType {
     email: string;
     password: string;
-    confirmPassword: string;
+    username: string;
 }
-interface AuthResponse {
-    result: boolean;
-    errorMessage: string;
-    dataResult?: {
-        accessToken: string;
-        refreshToken: string;
-    };
+interface SuccessResponse<T = string> {
+    data: T;
+    message: string;
+    success: true;
+}  
+interface ErrorResponse {
+    message: string;
+    success: false;
 }
 
-export type { LoginDataType, RegisterDataType, AuthResponse };
+type AuthResponse<T = string> = SuccessResponse<T> | ErrorResponse;
+type RegisterResponse<T = UserData> = SuccessResponse<T>| ErrorResponse;
+
+export type { LoginDataType, RegisterDataType, AuthResponse, RegisterResponse };

@@ -6,22 +6,35 @@ import background from '../assets/bg_login.png'
 import { useSelector } from 'react-redux';
 import { RootState } from '../features/store';
 import { useState } from 'react';
+import { TypeAnimation } from "react-type-animation";
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { acceptLogin } from '../features/auth/authSlice';
 
 const LoginPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const isFetching = useSelector((state: RootState) => state.auth.isLoading);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  useEffect(() => {
+    if (isAuthenticated === true) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleOnclick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); 
 
     const data: LoginDataType = {
-        userName: username,
-        passWord: password
+        email: username,
+        password: password
     };
-    console.log(data);
     dispatch(fetchAsyncLoginUsers(data));
+    //dispatch(acceptLogin());
   };
 
   return (    
@@ -29,10 +42,20 @@ const LoginPage = () => {
     <img src={background} className='absolute inset-0 object-cover w-full h-full -z-20'/>
     {/* Login Form Section */}
     <section className='h-screen w-full flex flex-col justify-center items-center'>
-      <form className='relative flex flex-col gap-4 items-start justify-center max-w-md w-full md:rounded-3xl rounded-xl backdrop-blur-2xl full-shadow md:py-10 md:px-10 p-6'>
+      <form className='relative flex flex-col gap-4 items-start justify-center max-w-md w-full md:rounded-3xl rounded-xl backdrop-blur-2xl full-shadow
+                       md:py-10 md:px-10 p-6
+                       animate-fade-in'>
         {/* Title */}
         <h1 className='md:text-3xl text-2xl font-semibold self-center'>Login</h1>
-        <span className='text-gray-500 self-center md:text-lg md:mb-10 mb-4'>Welcome back, Yapper !</span>
+        <TypeAnimation
+          sequence={[
+            "Welcome back, Yapper!",1000,
+          ]}
+          wrapper="span"
+          className="text-gray-500 self-center md:text-lg md:mb-10 mb-4"
+          speed={150}
+          repeat={0} 
+        />
         
         <label className="input input-bordered flex items-center gap-2 w-full">
         <svg
@@ -43,7 +66,7 @@ const LoginPage = () => {
           <path
             d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
         </svg>
-        <input type="text" className="grow" placeholder="Username or Email" onChange={e => setUsername(e.target.value)}/>
+        <input type="text" className="grow text-sm md:text-lg" placeholder="Username or Email" onChange={e => setUsername(e.target.value)}/>
         </label>
 
         <label className="input input-bordered flex items-center gap-2 w-full mt-2">
@@ -57,7 +80,7 @@ const LoginPage = () => {
               d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
               clip-rule="evenodd" />
           </svg>
-          <input type="password" className="grow" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+          <input type="password" className="grow text-sm md:text-lg" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
         </label>
 
         {/* Using flex to avoid resizing height caused by Daisy loading */}
@@ -68,8 +91,8 @@ const LoginPage = () => {
         </button>
 
         <div className="flex justify-between w-full text-sm">
-            <a href="/signup" className="text-gray-500 hover:text-black transition">Create an Account</a>
-            <a href="/forgot-password" className="text-gray-500 hover:text-black transition">Forgot Password?</a>
+            <Link to="/signup" className="text-gray-500 hover:text-black transition">Create an Account</Link>
+            <Link to="/" className="text-gray-500 hover:text-black transition">Forgot Password?</Link>
         </div>
 
       </form>
