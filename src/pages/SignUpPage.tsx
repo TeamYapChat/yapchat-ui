@@ -51,7 +51,7 @@ const SignUpPage = () => {
           ]}
           wrapper="span"
           className="text-gray-500 self-center md:text-lg md:mb-10 mb-4"
-          speed={150}
+          speed={99}
           repeat={0} 
         />
         
