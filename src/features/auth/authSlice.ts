@@ -78,7 +78,11 @@ const authSlice = createSlice({
             }
         });
         builder.addCase(fetchAsyncLoginUsers.rejected, (state, action) => {
-            state.error = action.error.message || 'Failed to login';
+            if (action.payload && typeof action.payload === "object" && "message" in action.payload) {
+                state.error = action.payload.message as string
+            } else {
+                state.error = "Failed to register. Please try again.";
+            }
             state.isLoading = false;
             state.isAuthenticated = false;
         });
