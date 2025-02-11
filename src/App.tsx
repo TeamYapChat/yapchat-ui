@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage'
 import HomePage from './pages/HomePage'
 import PrivateRoute from './components/PrivateRoute'
 import { useLocation } from 'react-router-dom'
+import { Toaster} from 'sonner'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <>
+      <Toaster position="top-right" richColors/>
        {!hideNavOnRoutes.includes(location.pathname) && <NavBar />}
 
       <Routes>

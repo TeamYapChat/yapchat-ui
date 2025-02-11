@@ -10,12 +10,13 @@ import { TypeAnimation } from "react-type-animation";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import { toast } from 'sonner';
 const LoginPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const isFetching = useSelector((state: RootState) => state.auth.isLoading);
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const error = useSelector((state: RootState) => state.auth.error);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -33,7 +34,11 @@ const LoginPage = () => {
         password: password
     };
     dispatch(fetchAsyncLoginUsers(data));
-    //dispatch(acceptLogin());
+    
+    if (!isAuthenticated){
+      toast.error(error);
+    }
+
   };
 
   return (    

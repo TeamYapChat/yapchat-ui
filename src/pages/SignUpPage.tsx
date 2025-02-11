@@ -5,9 +5,10 @@ import { AppDispatch } from '../features/store';
 import background from '../assets/bg_login.png'
 import { useSelector } from 'react-redux';
 import { RootState } from '../features/store';
-import { useState } from 'react';
+import { useState} from 'react';
 import { TypeAnimation } from "react-type-animation";
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const SignUpPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,13 +17,7 @@ const SignUpPage = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  // useEffect(() => {
-  //   if (isAuthenticated === true) {
-  //     navigate('/');
-  //   }
-  // }, [isAuthenticated, navigate]);
-
-  const handleOnclick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOnclick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); 
 
     const data: RegisterDataType = {
@@ -30,7 +25,11 @@ const SignUpPage = () => {
         username: username,
         password: password
     };
-    dispatch(fetchAsyncRegisterUsers(data));
+    const resultAction = await dispatch(fetchAsyncRegisterUsers(data));
+
+    if (fetchAsyncRegisterUsers.rejected.match(resultAction)) {
+      toast.error(resultAction.error.message);
+  }
   };
 
   return (    

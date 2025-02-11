@@ -61,6 +61,7 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchAsyncLoginUsers.pending, (state) => {
             state.isLoading = true;
+            state.error = null;
         });
         builder.addCase(fetchAsyncLoginUsers.fulfilled, (state, action:  PayloadAction<AuthResponse>) => {
             state.isLoading = false;
