@@ -10,7 +10,6 @@ import { TypeAnimation } from "react-type-animation";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { acceptLogin } from '../features/auth/authSlice';
 
 const LoginPage = () => {
   const dispatch = useDispatch<AppDispatch>();

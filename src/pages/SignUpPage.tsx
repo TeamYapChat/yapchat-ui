@@ -7,12 +7,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../features/store';
 import { useState } from 'react';
 import { TypeAnimation } from "react-type-animation";
-import { useNavigate, Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const SignUpPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const isFetching = useSelector((state: RootState) => state.auth.isLoading);
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
