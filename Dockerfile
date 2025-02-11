@@ -13,6 +13,12 @@ RUN npm run build
 
 # Stage 2: Serve the application using Nginx
 FROM nginx:1.27-alpine AS final
+
+# Set labels for GHCR
+LABEL org.opencontainers.image.source=https://github.com/teamyapchat/yapchat-ui
+LABEL org.opencontainers.image.description="Frontend for YapChat"
+LABEL org.opencontainers.image.licenses=GPLv3
+
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copy custom Nginx configuration
