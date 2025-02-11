@@ -52,7 +52,7 @@ const LoginPage = () => {
           ]}
           wrapper="span"
           className="text-gray-500 self-center md:text-lg md:mb-10 mb-4"
-          speed={99}
+          speed={70}
           repeat={0} 
         />
         
