@@ -79,6 +79,7 @@ const authSlice = createSlice({
         builder.addCase(fetchAsyncLoginUsers.rejected, (state, action) => {
             if (action.payload && typeof action.payload === "object" && "message" in action.payload) {
                 state.error = action.payload.message  as string
+                console.log(action.payload.message);
             } else {
                 state.error = "Failed to register. Please try again.";
             }
