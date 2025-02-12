@@ -77,6 +77,7 @@ const authSlice = createSlice({
             }
         });
         builder.addCase(fetchAsyncLoginUsers.rejected, (state, action) => {
+            console.log(action.payload);
             if (action.payload && typeof action.payload === "object" && "message" in action.payload) {
                 state.error = action.payload.message  as string
                 console.log(action.payload.message);
