@@ -61,7 +61,6 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchAsyncLoginUsers.pending, (state) => {
             state.isLoading = true;
-            state.error = null;
         });
         builder.addCase(fetchAsyncLoginUsers.fulfilled, (state, action:  PayloadAction<AuthResponse>) => {
             state.isLoading = false;
@@ -79,7 +78,7 @@ const authSlice = createSlice({
         });
         builder.addCase(fetchAsyncLoginUsers.rejected, (state, action) => {
             if (action.payload && typeof action.payload === "object" && "message" in action.payload) {
-                state.error = action.payload.message as string
+                state.error = action.payload.message  as string
             } else {
                 state.error = "Failed to register. Please try again.";
             }

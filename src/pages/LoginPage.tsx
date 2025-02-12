@@ -16,7 +16,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const isFetching = useSelector((state: RootState) => state.auth.isLoading);
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const error = useSelector((state: RootState) => state.auth.error);
+  //const error = useSelector((state: RootState) => state.auth.error);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -26,17 +26,18 @@ const LoginPage = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleOnclick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOnclick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); 
 
     const data: LoginDataType = {
         email: username,
         password: password
     };
-    dispatch(fetchAsyncLoginUsers(data));
     
-    if (!isAuthenticated){
-      toast.error(error);
+    const resultAction = await dispatch(fetchAsyncLoginUsers(data));
+
+    if (fetchAsyncLoginUsers.rejected.match(resultAction)) {
+      toast.error(resultAction.error.message);
     }
 
   };
