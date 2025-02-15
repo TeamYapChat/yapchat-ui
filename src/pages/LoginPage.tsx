@@ -16,7 +16,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const isFetching = useSelector((state: RootState) => state.auth.isLoading);
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const error = useSelector((state: RootState) => state.auth.error);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -37,9 +36,11 @@ const LoginPage = () => {
     const resultAction = await dispatch(fetchAsyncLoginUsers(data));
 
     if (fetchAsyncLoginUsers.rejected.match(resultAction)) {
-      toast.error(error);
+      const errorMsg = resultAction.error.message || "Login failed. Please try again.";
+      toast.error(errorMsg);
+    }else{
+      toast.success("Login success");
     }
-
   };
 
   return (    

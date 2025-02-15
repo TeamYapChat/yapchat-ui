@@ -21,10 +21,10 @@ const initialState : AuthState = {
 }
 
 // Async thunk for login
-export const fetchAsyncLoginUsers = createAsyncThunk<AuthResponse,LoginDataType>(
+export const fetchAsyncLoginUsers = createAsyncThunk<AuthResponse,LoginDataType, {rejectValue : {message: string, result: boolean}}>(
     'auth/login',
     async (loginData: LoginDataType) => {
-        const response = await authApis.login(loginData) as AuthResponse;
+        const response = await authApis.login(loginData);
         return response;
     }
 )
@@ -60,10 +60,12 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchAsyncLoginUsers.pending, (state) => {
+            state.error = null;
             state.isLoading = true;
         });
         builder.addCase(fetchAsyncLoginUsers.fulfilled, (state, action:  PayloadAction<AuthResponse>) => {
             state.isLoading = false;
+            console.log(action.payload);
             if (action.payload.success && "data" in action.payload) {
                 const accessToken = action.payload.data;
                 if (accessToken) {
@@ -82,12 +84,13 @@ const authSlice = createSlice({
                 state.error = action.payload.message  as string
                 console.log(action.payload.message);
             } else {
-                state.error = "Failed to register. Please try again.";
+                state.error = action.error.message || 'Failed to authenticate';
             }
             state.isLoading = false;
             state.isAuthenticated = false;
         });
         builder.addCase(fetchAsyncRegisterUsers.pending, (state) => {
+            state.error = null;
             state.isLoading = true;
         });
         builder.addCase(fetchAsyncRegisterUsers.fulfilled, (state, action: PayloadAction<RegisterResponse>) => {

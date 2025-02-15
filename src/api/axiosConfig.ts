@@ -35,9 +35,8 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    const data = response.data;
 
-    return data;
+    return response;
   },
   (error) => {
 
@@ -46,7 +45,7 @@ axiosInstance.interceptors.response.use(
       store.dispatch(logout());
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error.response.data);
   }
 );
 

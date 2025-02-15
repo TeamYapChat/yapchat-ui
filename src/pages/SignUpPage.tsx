@@ -29,7 +29,10 @@ const SignUpPage = () => {
 
     if (fetchAsyncRegisterUsers.rejected.match(resultAction)) {
       toast.error(resultAction.error.message);
-  }
+    }
+    else{
+      toast.success("Register success");
+    }
   };
 
   return (    
