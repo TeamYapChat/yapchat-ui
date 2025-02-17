@@ -9,6 +9,18 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        "off-white": "#FAF9F6",
+        "primary-electri-blue": "#3B82F6",
+        "primary-royal-purple": "#6D28D9",
+        "primary-hot-pink": "#EC4899",
+
+        "secondary-lavender": "#A78BFA",
+        "secondary-peach-pink": "#FBCFE8",
+
+        "dark-text": "#111827",
+        "light-text": "#E5E7EB",
+      },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in-out",
         "slide-up": "slideUp 0.5s ease-out",

@@ -17,7 +17,7 @@ function App() {
   const hideNavOnRoutes = ["/login", "/signup"];
 
   return (
-    <>
+    <div className="flex flex-col h-screen overflow-auto">
       <Toaster position="top-right" richColors/>
        {!hideNavOnRoutes.includes(location.pathname) && <NavBar />}
 
@@ -30,7 +30,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
       </Routes>
-    </>
+    </div>
   )
 }
 

@@ -8,9 +8,9 @@ const NavBar = () => {
   const dispatch = useDispatch()
 
   return (
-    <nav className='flex justify-between items-center
-                    h-16 p-4 
-                    bg-gray-800 text-white'>
+    <nav className='fixed top-0 flex justify-between items-center
+                    h-16 w-full p-4 
+                    bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 opacity-70 text-white'>
 
       <div>Yap Chat</div>
 

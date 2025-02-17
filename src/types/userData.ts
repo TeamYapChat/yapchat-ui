@@ -1,7 +1,14 @@
-interface UserData {
+interface UserCredentialsData {
     email: string;
     id: number;
     username: string;
 }
 
-export type { UserData };
+interface UserData {
+    id: number;
+    fullname: string;
+    email: string;
+    avatar: string;
+}
+
+export type { UserCredentialsData, UserData };

@@ -1,4 +1,4 @@
-import { UserData } from "./userData";
+import { UserCredentialsData } from "./userData";
 
 interface LoginDataType {
     email: string;
@@ -20,6 +20,6 @@ interface ErrorResponse {
 }
 
 type AuthResponse<T = string> = SuccessResponse<T> | ErrorResponse;
-type RegisterResponse<T = UserData> = SuccessResponse<T>| ErrorResponse;
+type RegisterResponse<T = UserCredentialsData> = SuccessResponse<T>| ErrorResponse;
 
 export type { LoginDataType, RegisterDataType, AuthResponse, RegisterResponse };

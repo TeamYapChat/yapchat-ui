@@ -2,13 +2,14 @@ import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
 import { isTokenValid } from '../ultils/tokenUltils'; 
 import { AuthResponse, LoginDataType, RegisterDataType, RegisterResponse } from '../../types/authType';
 import authApis from '../../api/authApis';
-import { UserData } from '../../types/userData';
+import { UserCredentialsData } from '../../types/userData';
 
 // Type definitions
 interface AuthState {
     isAuthenticated: boolean;
-    user: UserData | null;
+    user: UserCredentialsData | null;
     isLoading: boolean;
+    isUploadingProfile: boolean;
     error: string | null;
 }
 
@@ -17,6 +18,7 @@ const initialState : AuthState = {
     isAuthenticated: isTokenValid(localStorage.getItem('token')) ? true : false,
     user: null,
     isLoading: false,
+    isUploadingProfile: false,
     error: null,
 }
 
@@ -79,10 +81,8 @@ const authSlice = createSlice({
             }
         });
         builder.addCase(fetchAsyncLoginUsers.rejected, (state, action) => {
-            console.log(action.payload);
             if (action.payload && typeof action.payload === "object" && "message" in action.payload) {
-                state.error = action.payload.message  as string
-                console.log(action.payload.message);
+                state.error = action.payload.message  as string;
             } else {
                 state.error = action.error.message || 'Failed to authenticate';
             }
