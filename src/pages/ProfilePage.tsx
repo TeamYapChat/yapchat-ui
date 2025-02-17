@@ -16,6 +16,8 @@ const ProfilePage = () => {
     fullname: "John Doe",
     email: "abc123@my.utsa.edu",
     avatar: "",
+    createdAt: new Date(),
+    updatedAt: new Date()
   }
 
   const handleImageUpload = async (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -34,18 +36,18 @@ const ProfilePage = () => {
   };
 
   return (
-    <main className="overflow-hidden h-full">
+    <main className="h-full">
       {/* Larger Blur */}
-      <div className="absolute left-20 top-1/4 w-96 h-96 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 
+      <div className="fixed left-20 top-1/4 w-96 h-96 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 
                     blur-3xl rounded-full opacity-50"></div>
       
       {/* Smaller Blur*/}
-      <div className="absolute right-40 top-1/6 w-60 h-60 bg-gradient-to-r from-blue-400 to-pink-500 
+      <div className="fixed right-40 top-1/5 w-60 h-60 bg-gradient-to-r from-blue-400 to-pink-500 
                     blur-2xl rounded-full opacity-50"></div>
 
-      <div className="pt-20 bg-off-white h-full">
-        <div className="max-w-2xl mx-auto p-4 py-8">
-          <div className="relative full-shadow rounded-xl p-6 space-y-8 backdrop-blur-xl">
+      <div className=" bg-off-white h-full flex justify-center items-center">
+        <div className="max-w-2xl mx-auto p-4 py-8 w-full">
+          <div className="relative full-shadow rounded-xl p-6 space-y-8 backdrop-blur-xl my-10">
         
             <div className="text-center">
               <h1 className="text-2xl font-semibold">Profile</h1>
@@ -59,7 +61,7 @@ const ProfilePage = () => {
               <img
                 src={ selectedImg || user?.avatar || defaultAvatar}
                 alt="Profile"
-                className="size-32 rounded-full object-cover border-4 border-primary-hot-pink/60 "
+                className="size-32 rounded-full object-cover border-4 border-primary-hot-pink/60"
               />
               <label
                 htmlFor="avatar-upload"
@@ -93,7 +95,7 @@ const ProfilePage = () => {
                 <User className="w-4 h-4" />
                 Full Name
               </div>
-              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{user?.fullname}</p>
+              <p className="px-4 py-2.5 bg-secondary-lavender/20 rounded-lg border">{user?.fullname}</p>
             </div>
 
             <div className="space-y-1.5">
@@ -101,7 +103,21 @@ const ProfilePage = () => {
                 <Mail className="w-4 h-4" />
                 Email Address
               </div>
-              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{user?.email}</p>
+              <p className="px-4 py-2.5 bg-secondary-lavender/20 rounded-lg border">{user?.email}</p>
+            </div>
+          </div>
+
+          <div className="mt-6 bg-secondary-lavender/20 rounded-xl p-6">
+            <h2 className="text-lg font-medium  mb-4">Account Information</h2>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center justify-between py-2 border-b border-zinc-700">
+                <span>Member Since</span>
+                <span>{user.createdAt ? new Date(user.createdAt).toISOString().split("T")[0] : "N/A"}</span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span>Account Status</span>
+                <span className="text-green-500">Active</span>
+              </div>
             </div>
           </div>
 

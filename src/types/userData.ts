@@ -9,6 +9,8 @@ interface UserData {
     fullname: string;
     email: string;
     avatar: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export type { UserCredentialsData, UserData };
