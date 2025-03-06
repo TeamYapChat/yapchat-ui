@@ -1,7 +1,7 @@
 import { UserCredentialsData } from "./userData";
 
 interface LoginDataType {
-  email: string;
+  login: string;
   password: string;
 }
 interface RegisterDataType {

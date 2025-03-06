@@ -31,7 +31,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     const data: LoginDataType = {
-      email: username,
+      login: username,
       password: password,
     };
 
