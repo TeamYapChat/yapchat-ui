@@ -1,13 +1,14 @@
-import { SignUp } from "@clerk/clerk-react";
+import { SignIn } from "@clerk/clerk-react";
 
-export default function SignUpPage() {
+export default function SignInPage() {
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-br from-teal-300 to-pink-300">
-      <SignUp
-        path="/sign-up"
+      <SignIn
+        path="/sign-in"
         routing="path"
-        signInUrl="/sign-in"
-        signInFallbackRedirectUrl="/"
+        signUpUrl="/sign-up"
+        signUpFallbackRedirectUrl="/"
+        forceRedirectUrl="/"
         appearance={{
           variables: {
             colorPrimary: "#4fd1c5", // Teal
