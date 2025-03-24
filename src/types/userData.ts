@@ -1,16 +1,16 @@
-interface UserCredentialsData {
-  email: string;
-  id: number;
-  username: string;
-}
-
 interface UserData {
   id: number;
-  fullname: string;
   email: string;
-  avatar: string;
-  createdAt: Date;
-  updatedAt: Date;
+  image_url: string;
+  username: string;
+  created_at: Date;
+  is_online: boolean;
 }
 
-export type { UserCredentialsData, UserData };
+interface UserDataResponse<T = UserData> {
+  data: T;
+  message: string;
+  success: true;
+}
+
+export type { UserData, UserDataResponse };

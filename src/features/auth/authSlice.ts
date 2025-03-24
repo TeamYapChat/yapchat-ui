@@ -1,50 +1,36 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { isTokenValid } from "../ultils/tokenUltils";
-import {
-  AuthResponse,
-  LoginDataType,
-  RegisterDataType,
-  RegisterResponse,
-} from "../../types/authType";
 import authApis from "../../api/authApis";
-import { UserCredentialsData } from "../../types/userData";
+import { UserDataResponse, UserData } from "../../types/userData";
 
 // Type definitions
 interface AuthState {
-  isAuthenticated: boolean;
-  user: UserCredentialsData | null;
+  isAuthenticated: boolean | undefined;
+  user: UserData | null;
   isLoading: boolean;
   isUploadingProfile: boolean;
   error: string | null;
+  token: string | null;
 }
+
 
 // Initial state
 const initialState: AuthState = {
-  isAuthenticated: isTokenValid(localStorage.getItem("token")) ? true : false,
+  isAuthenticated: false,
   user: null,
   isLoading: false,
   isUploadingProfile: false,
   error: null,
+  token: null,
 };
 
-// Async thunk for login
-export const fetchAsyncLoginUsers = createAsyncThunk<
-  AuthResponse,
-  LoginDataType,
-  { rejectValue: { message: string; result: boolean } }
->("auth/login", async (loginData: LoginDataType) => {
-  const response = await authApis.login(loginData);
-  return response;
-});
-
-// Async thunk for register
-export const fetchAsyncRegisterUsers = createAsyncThunk<
-  RegisterResponse,
-  RegisterDataType
->("auth/register", async (registerData: RegisterDataType) => {
-  const response = (await authApis.signup(registerData)) as RegisterResponse;
-  return response;
-});
+// Async thunk for fetch user's data
+export const fetchAsyncGetUser = createAsyncThunk<UserDataResponse>(
+  "auth/getUser",
+  async () => {
+    const response = await authApis.getUser();
+    return response;
+  }
+);
 
 // Slice
 const authSlice = createSlice({
@@ -52,83 +38,43 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("token");
       return {
         ...state,
         isAuthenticated: false,
         user: null,
       };
     },
-    acceptLogin: (state) => {
+    setLogin: (state, action) => {
       return {
         ...state,
-        isAuthenticated: true,
+        isAuthenticated: action.payload,
       };
+    },
+    setToken: (state, action) => {
+      state.token = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchAsyncLoginUsers.pending, (state) => {
-      state.error = null;
+
+    // Builder for fetch user's data
+    builder.addCase(fetchAsyncGetUser.pending, (state) => {
       state.isLoading = true;
-    });
-    builder.addCase(
-      fetchAsyncLoginUsers.fulfilled,
-      (state, action: PayloadAction<AuthResponse>) => {
-        state.isLoading = false;
-        console.log(action.payload);
-        if (action.payload.success && "data" in action.payload) {
-          const accessToken = action.payload.data;
-          if (accessToken) {
-            localStorage.setItem("token", accessToken);
-            state.isAuthenticated = true;
-          } else {
-            state.error = "Access token is missing";
-          }
-        } else {
-          state.error = action.payload.message || "Authentication failed";
-        }
-      }
+    }
     );
-    builder.addCase(fetchAsyncLoginUsers.rejected, (state, action) => {
-      if (
-        action.payload &&
-        typeof action.payload === "object" &&
-        "message" in action.payload
-      ) {
-        state.error = action.payload.message as string;
-      } else {
-        state.error = action.error.message || "Failed to authenticate";
-      }
+    builder.addCase(fetchAsyncGetUser.fulfilled, (state, action: PayloadAction<UserDataResponse>) => {
       state.isLoading = false;
-      state.isAuthenticated = false;
-    });
-    builder.addCase(fetchAsyncRegisterUsers.pending, (state) => {
-      state.error = null;
-      state.isLoading = true;
-    });
-    builder.addCase(
-      fetchAsyncRegisterUsers.fulfilled,
-      (state, action: PayloadAction<RegisterResponse>) => {
-        state.isLoading = false;
-        if (action.payload.success && "data" in action.payload) {
-          const userData = action.payload.data;
-          if (userData) {
-            state.user = userData;
-          } else {
-            state.error = "User data is missing";
-          }
-        } else {
-          state.error = action.payload.message || "Registration failed";
-        }
+      if ("data" in action.payload) {
+        state.user = action.payload.data;
       }
+    });
+    builder.addCase(fetchAsyncGetUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message || "Failed to fetch user data";
+    }
     );
-    builder.addCase(fetchAsyncRegisterUsers.rejected, (state, action) => {
-      state.error = action.error.message || "Failed to register";
-      state.isLoading = false;
-    });
   },
 });
 
-export const { logout, acceptLogin } = authSlice.actions;
+export const { logout, setLogin, setToken } = authSlice.actions;
 
 export default authSlice.reducer;
