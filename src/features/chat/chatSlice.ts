@@ -58,6 +58,9 @@ const chatSlice = createSlice({
         setSelectedChatRoom: (state, action: PayloadAction<ChatRoomType | null>) => {
             state.selectedChatRoom = action.payload;
         },
+        receiveNewMessage: (state, action: PayloadAction<MessageType>) => {
+            state.messages.push(action.payload);
+        },
     },
     extraReducers: (builder) => {
         // Get chat rooms
@@ -116,4 +119,4 @@ const chatSlice = createSlice({
 })
 
 export default chatSlice.reducer;
-export const { clearChatRooms, setSelectedChatRoom } = chatSlice.actions; // Selector to get chat rooms from state
+export const { clearChatRooms, setSelectedChatRoom, receiveNewMessage } = chatSlice.actions; // Selector to get chat rooms from state

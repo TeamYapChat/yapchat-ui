@@ -9,12 +9,13 @@ import { fetchAsyncGetMessagesByChatRoomId } from "../../features/chat/chatSlice
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../features/store";
 import default_avatar from "../../assets/avatar.png";
+//import { useChatSocket } from "../../hooks/useWebSocket";
 
 const ChatContainer = () => {
   // const {
   //   subscribeToMessages,
   //   unsubscribeFromMessages,
-  // } = useChatStore();
+  // } = useChatSocket();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const { user } = useSelector((state: RootState) => state.auth);
   const { isMessagesLoading, selectedChatRoom, messages} = useSelector((state: RootState) => state.chat);
