@@ -1,5 +1,5 @@
 import Sidebar from "../components/Sidebar";
-import ChatContainer from "../components/ChatContainer";
+import ChatContainer from "../components/ChatContainer/ChatContainer";
 import NoChatSelected from "../components/NoChatSelected";
 import { useSelector } from "react-redux";
 import { RootState } from "../features/store";

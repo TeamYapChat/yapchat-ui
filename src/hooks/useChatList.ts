@@ -27,8 +27,8 @@ const useChatList = () => {
       setShownChatRooms(
         chatRooms.filter(
           (chatRoom) =>
-            chatRoom.participant_ids.some(
-              (id) => id !== user.id && onlineUsers.includes(id)
+            chatRoom.participants.some(
+              (friend) => friend.id !== user.id && onlineUsers.includes(friend.id)
             )
         )
       );

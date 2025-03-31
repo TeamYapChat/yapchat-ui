@@ -9,7 +9,6 @@ interface AuthState {
   isLoading: boolean;
   isUploadingProfile: boolean;
   error: string | null;
-  token: string | null;
 }
 
 
@@ -20,7 +19,6 @@ const initialState: AuthState = {
   isLoading: false,
   isUploadingProfile: false,
   error: null,
-  token: null,
 };
 
 // Async thunk for fetch user's data
@@ -50,9 +48,6 @@ const authSlice = createSlice({
         isAuthenticated: action.payload,
       };
     },
-    setToken: (state, action) => {
-      state.token = action.payload;
-    },
   },
   extraReducers: (builder) => {
 
@@ -75,6 +70,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setLogin, setToken } = authSlice.actions;
+export const { logout, setLogin } = authSlice.actions;
 
 export default authSlice.reducer;

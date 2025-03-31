@@ -1,5 +1,5 @@
 interface UserData {
-  id: number;
+  id: string;
   email: string;
   image_url: string;
   username: string;

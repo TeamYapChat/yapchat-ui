@@ -1,13 +1,15 @@
-import { ChatRoomCreateResponseType, ChatRoomCreateType, ChatRoomGetResponseType, ChatRoomType } from "../../types/chatType";
+import { ChatRoomCreateResponseType, ChatRoomCreateType, ChatRoomGetResponseType, ChatRoomType, MessageType, MessageGetResponseType } from "../../types/chatType";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import chatApis from "../../api/chatApis";
 
 interface ChatState {
     chatRooms: ChatRoomType[];
-    onlineUsers: number[];
+    onlineUsers: string[];
     isLoading: boolean;
     error: string | null;
     selectedChatRoom: ChatRoomType | null;
+    isMessagesLoading: boolean;
+    messages: MessageType[];
 }
 
 const initialState: ChatState = {
@@ -16,6 +18,8 @@ const initialState: ChatState = {
     isLoading: false,
     error: null,
     selectedChatRoom: null,
+    isMessagesLoading: true,
+    messages: [],
 };
 
 export const fetchAsyncGetChatRooms = createAsyncThunk<
@@ -35,6 +39,15 @@ export const fetchAsyncCreateChatRoom = createAsyncThunk<
         }
 );
 
+export const fetchAsyncGetMessagesByChatRoomId = createAsyncThunk<
+    MessageGetResponseType,
+    number>(
+        "chat/getMessagesByChatRoomId", async (chatRoomId) => {
+            const response = await chatApis.getMessagesByChatRoomId(chatRoomId);
+            return response;
+        }
+);
+
 const chatSlice = createSlice({
     name: "chat",
     initialState,
@@ -47,6 +60,7 @@ const chatSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        // Get chat rooms
         builder.addCase(fetchAsyncGetChatRooms.pending, (state) => {
             state.isLoading = true;
         });
@@ -56,9 +70,9 @@ const chatSlice = createSlice({
             if ("data" in action.payload && action.payload.data) {
                 state.chatRooms = action.payload.data;
                 for (const room of action.payload.data) {
-                    for (const userId of room.participant_ids) {
-                        if (!state.onlineUsers.includes(userId)) {
-                            state.onlineUsers.push(userId);
+                    for (const user of room.participants) {
+                        if (!state.onlineUsers.includes(user.id) && user.is_online == true) {
+                            state.onlineUsers.push(user.id);
                         }
                     }
                 }
@@ -81,6 +95,23 @@ const chatSlice = createSlice({
             state.isLoading = false;
             state.error = action.error.message || "Failed to create chat room";
         });
+        // Get messages by chat room id
+        builder.addCase(fetchAsyncGetMessagesByChatRoomId.pending, (state) => {
+            state.isMessagesLoading = true;
+        });
+        builder.addCase(fetchAsyncGetMessagesByChatRoomId.fulfilled, (state, action: PayloadAction<MessageGetResponseType>) => {
+            state.isMessagesLoading = false;
+            state.error = null;
+            if ("data" in action.payload && action.payload.data) {
+                state.messages = action.payload.data;
+            }
+        }
+        );
+        builder.addCase(fetchAsyncGetMessagesByChatRoomId.rejected, (state, action) => {
+            state.isMessagesLoading = false;
+            state.error = action.error.message || "Failed to fetch messages";
+        }
+        );  
     },
 })
 

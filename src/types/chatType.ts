@@ -1,25 +1,33 @@
 import { ErrorResponse } from "./authType";
+import { UserData } from "./userData";
 
 interface ChatRoomType {
     id: number;
     name: string;
-    participant_ids: number[];
+    participants: UserData[];
     type: string;
 }
 
 interface ChatRoomCreateType{
     name: string;
-    participant_ids: number[];
+    participant_ids: string[];
     type: string;
 }
 
-interface ChatRoomSuccessResponseType <T> {
+interface SuccessResponseType <T> {
     data: T;
     message: string;
     success: true;
 }
 
-type ChatRoomGetResponseType<T = ChatRoomType[]> = ChatRoomSuccessResponseType <T> | ErrorResponse;
-type ChatRoomCreateResponseType<T = string> = ChatRoomSuccessResponseType <T> | ErrorResponse;
+interface MessageType {
+    content: string;
+    sender_id: string;
+    timestamp: Date;
+}
 
-export type { ChatRoomType, ChatRoomGetResponseType, ChatRoomCreateResponseType, ChatRoomCreateType };
+type ChatRoomGetResponseType<T = ChatRoomType[]> = SuccessResponseType <T> | ErrorResponse;
+type ChatRoomCreateResponseType<T = string> = SuccessResponseType <T> | ErrorResponse;
+type MessageGetResponseType<T = MessageType[]> = SuccessResponseType <T> | ErrorResponse;
+
+export type { ChatRoomType, ChatRoomGetResponseType, ChatRoomCreateResponseType, ChatRoomCreateType, MessageType, MessageGetResponseType };

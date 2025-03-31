@@ -1,4 +1,4 @@
-import { ChatRoomGetResponseType, ChatRoomCreateResponseType, ChatRoomCreateType } from "../types/chatType";
+import { ChatRoomGetResponseType, ChatRoomCreateResponseType, ChatRoomCreateType, MessageGetResponseType } from "../types/chatType";
 import { UserDataResponse } from "../types/userData";
 import axiosInstance from "./axiosConfig";
 
@@ -33,7 +33,11 @@ const chatApis = {
     searchUser: async (username: string) => {
         const response = await axiosInstance.get<UserDataResponse>(`/v1/user/${username}`);
         return response.data;
-    }
+    },
+    getMessagesByChatRoomId: async (chatRoomId: number) => {
+      const response = await axiosInstance.get<MessageGetResponseType>(`/v1/chatrooms/${chatRoomId}/messages`);
+      return response.data;
+    },
 };
 
 export default chatApis;
