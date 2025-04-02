@@ -5,11 +5,11 @@ import MessageSkeleton from "../skeletons/MessageSkeleton";
 import { formatMessageTime } from "../../lib/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "../../features/store";
-import { fetchAsyncGetMessagesByChatRoomId } from "../../features/chat/chatSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../features/store";
+// import { fetchAsyncGetMessagesByChatRoomId } from "../../features/chat/chatSlice";
+// import { useDispatch } from "react-redux";
+// import { AppDispatch } from "../../features/store";
 import default_avatar from "../../assets/avatar.png";
-//import { useChatSocket } from "../../hooks/useWebSocket";
+// import { useChatSocket } from "../../hooks/useWebSocket";
 
 const ChatContainer = () => {
   // const {
@@ -19,15 +19,15 @@ const ChatContainer = () => {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const { user } = useSelector((state: RootState) => state.auth);
   const { isMessagesLoading, selectedChatRoom, messages} = useSelector((state: RootState) => state.chat);
-  const dispatch = useDispatch<AppDispatch>();
+  //const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    if (!selectedChatRoom) return;
-    dispatch(fetchAsyncGetMessagesByChatRoomId(selectedChatRoom.id));
-    //subscribeToMessages();
+  // useEffect(() => {
+  //   if (!selectedChatRoom) return;
+  //   dispatch(fetchAsyncGetMessagesByChatRoomId(selectedChatRoom.id));
+  //   subscribeToMessages();
 
-    //return () => unsubscribeFromMessages();
-  }, [dispatch, selectedChatRoom]);
+  //   return () => unsubscribeFromMessages();
+  // }, [dispatch, selectedChatRoom, subscribeToMessages, unsubscribeFromMessages]);
 
   useEffect(() => {
     if (messageEndRef.current && messages) {

@@ -1,17 +1,17 @@
 import axios from "axios";
-import { Store } from "@reduxjs/toolkit";
-import { RootState } from "../features/store";
-import { logout } from "../features/auth/authSlice";
+// import { Store } from "@reduxjs/toolkit";
+// import { RootState } from "../features/store";
+//import { logout } from "../features/auth/authSlice";
 import { getClerk } from "../lib/clerk"; 
 
 //const baseUrl = "https://api.yapchat.xyz";
 const baseUrl = "http://localhost:8080";
 
-let store: Store<RootState>;
+//let store: Store<RootState>;
 
-export const injectStore = (newStore: Store<RootState>) => {
-  store = newStore;
-};
+// export const injectStore = (newStore: Store<RootState>) => {
+//   store = newStore;
+// };
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -41,9 +41,9 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     if (error.response?.status === 401) {
-        const clerk = await getClerk();
-       await clerk.signOut();
-       store.dispatch(logout());
+      //   const clerk = await getClerk();
+      //  await clerk.signOut();
+      //  store.dispatch(logout());
 
       return Promise.reject(error.response.data);
     }

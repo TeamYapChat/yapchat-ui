@@ -17,7 +17,6 @@ const LogInPage = () => {
               formButtonPrimary: "bg-off-white/30 hover:scale-105 hover:bg-transparent duration-200 text-black font-bold border-none outline-none shadow-none",
               card: " rounded-2xl backdrop-blur-sm bg-white/10",
               socialButtonsBlockButton: "bg-off-white/30 text-black font-bold",
-
               formFieldInput: "bg-off-white/80 text-black ",
               footer:"bg-none text-black font-bold",
               logoBox: "hidden",

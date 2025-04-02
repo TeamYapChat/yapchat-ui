@@ -12,7 +12,7 @@ export const getClerk = async () => {
 
   if (!clerkLoaded) {
     await clerkInstance.load();
-    clerkLoaded = true;
+    clerkLoaded = false;
   }
 
   return clerkInstance;
