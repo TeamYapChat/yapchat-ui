@@ -9,13 +9,22 @@ import { ClerkProvider } from "@clerk/clerk-react";
 async function initApp() {
   const res = await fetch("/config.json");
   const config = await res.json();
-  const PUBLISHABLE_KEY = config.CLERK_PUBLISHABLE_KEY;
 
-  if (!PUBLISHABLE_KEY) {
-    throw new Error("Missing Clerk Publishable Key in clerk-config.json");
-  }
+console.log("window type:", typeof window);
+console.log("Runtime Config:", window.__RUNTIME_CONFIG__);
+console.log("Clerk Key:", window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY);
 
-  createRoot(document.getElementById("root")!).render(
+const PUBLISHABLE_KEY =
+  window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY || "default-key";
+console.log("PUBLISHABLE_KEY: ", PUBLISHABLE_KEY);
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Add your Clerk Publishable Key to the .env file");
+}
+
+// injectStore(store);
+
+createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>

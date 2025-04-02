@@ -24,11 +24,11 @@ RUN echo "VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}" > .env.produ
 # Build the Vite application
 RUN npm run build
 
-# Stage 2: Serve the app with a lightweight HTTP server
-FROM node:23-alpine AS runner
+# Substitute environment variables
+RUN npx --yes envsub /app/dist/index.html
 
-# Set the working directory for serving
-WORKDIR /app
+# Stage 2: Serve the application using Nginx
+FROM nginx:1.27-alpine AS final
 
 RUN npm install serve
 
@@ -38,5 +38,11 @@ COPY --from=build /react-app/dist ./dist
 # Expose the port for the app
 EXPOSE 3001
 
-# Serve the app using a lightweight HTTP server
-CMD ["npx", "serve", "-s", "dist", "-l", "3001"]
+# Copy the template config file
+COPY ./nginx-entrypoint.sh /docker-entrypoint.d/nginx-entrypoint.sh
+RUN chmod +x /docker-entrypoint.d/nginx-entrypoint.sh
+
+
+# Expose port 80 and start Nginx
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
