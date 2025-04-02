@@ -11,6 +11,9 @@ RUN npm ci --silent
 COPY . .
 RUN npm run build
 
+# Substitute environment variables
+RUN npx --yes envsub /app/dist/index.html
+
 # Stage 2: Serve the application using Nginx
 FROM nginx:1.27-alpine AS final
 
@@ -23,6 +26,11 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy the template config file
+COPY ./nginx-entrypoint.sh /docker-entrypoint.d/nginx-entrypoint.sh
+RUN chmod +x /docker-entrypoint.d/nginx-entrypoint.sh
+
 
 # Expose port 80 and start Nginx
 EXPOSE 80
