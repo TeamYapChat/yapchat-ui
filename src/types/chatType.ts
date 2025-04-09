@@ -1,4 +1,4 @@
-import { ErrorResponse } from "./authType";
+import { ErrorResponseType, SuccessResponseType } from "./apiResponseType";
 import { UserData } from "./userData";
 
 interface ChatRoomType {
@@ -14,20 +14,15 @@ interface ChatRoomCreateType{
     type: string;
 }
 
-interface SuccessResponseType <T> {
-    data: T;
-    message: string;
-    success: true;
-}
-
 interface MessageType {
     content: string;
     sender_id: string;
     timestamp: Date;
 }
 
-type ChatRoomGetResponseType<T = ChatRoomType[]> = SuccessResponseType <T> | ErrorResponse;
-type ChatRoomCreateResponseType<T = string> = SuccessResponseType <T> | ErrorResponse;
-type MessageGetResponseType<T = MessageType[]> = SuccessResponseType <T> | ErrorResponse;
+type ChatRoomGetResponseType<T = ChatRoomType[]> = SuccessResponseType <T> | ErrorResponseType;
+type ChatRoomCreateResponseType<T = string> = SuccessResponseType <T> | ErrorResponseType;
+type MessageGetResponseType<T = MessageType[]> = SuccessResponseType <T> | ErrorResponseType;
+type ChatRoomLeaveResponseType<T = string> = SuccessResponseType <T> | ErrorResponseType;
 
-export type { ChatRoomType, ChatRoomGetResponseType, ChatRoomCreateResponseType, ChatRoomCreateType, MessageType, MessageGetResponseType };
+export type { ChatRoomType, ChatRoomGetResponseType, ChatRoomCreateResponseType, ChatRoomCreateType, MessageType, MessageGetResponseType, ChatRoomLeaveResponseType };

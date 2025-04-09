@@ -19,7 +19,7 @@ export default {
         "light-text": "#E5E7EB",
       },
       animation: {
-        "fade-in": "fadeIn 0.5s ease-in-out",
+        "fade-in": "fadeIn 0.75s ease-in-out",
         "slide-up": "slideUp 0.5s ease-out",
         "fade-up": "fadeUp 0.5s ease-out",
       },

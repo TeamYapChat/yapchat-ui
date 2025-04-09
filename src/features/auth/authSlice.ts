@@ -7,7 +7,6 @@ interface AuthState {
   isAuthenticated: boolean | undefined;
   user: UserData | null;
   isLoading: boolean;
-  isUploadingProfile: boolean;
   error: string | null;
 }
 
@@ -17,7 +16,6 @@ const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
   isLoading: false,
-  isUploadingProfile: false,
   error: null,
 };
 

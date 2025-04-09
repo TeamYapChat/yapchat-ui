@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
@@ -19,7 +18,6 @@ if (!PUBLISHABLE_KEY) {
 // injectStore(store);
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
@@ -27,5 +25,4 @@ createRoot(document.getElementById("root")!).render(
         </ClerkProvider>
       </Provider>
     </BrowserRouter>
-  </StrictMode>
 );

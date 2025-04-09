@@ -1,3 +1,5 @@
+import { SuccessResponseType } from '../types/apiResponseType';
+
 interface UserData {
   id: string;
   email: string;
@@ -7,10 +9,6 @@ interface UserData {
   is_online: boolean;
 }
 
-interface UserDataResponse<T = UserData> {
-  data: T;
-  message: string;
-  success: true;
-}
+type UserDataResponse<T = UserData> = SuccessResponseType<T>;
 
 export type { UserData, UserDataResponse };

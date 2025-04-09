@@ -23,6 +23,7 @@ const useDialog = () => {
         setInputTerm("");
         setFoundUser(null);
         setError(null);
+        setChatName("");
     }
 
     const handleSearchClicked = (e :React.MouseEvent<HTMLButtonElement>) => {

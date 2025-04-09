@@ -1,12 +1,17 @@
 import { useRef, useState } from "react";
 import { Image, Send, X } from "lucide-react";
 import { toast } from "sonner"
+import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
+import { useChatSocket } from "../../features/context/ChatSocketContext";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  //const { sendMessage } = useChatStore();
+  const { sendMessage } = useChatSocket();
+
+  const { selectedChatRoom, isMessagesLoading } = useSelector((state: RootState) => state.chat);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,19 +41,18 @@ const MessageInput = () => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
 
-//     try {
-//       await sendMessage({
-//         text: text.trim(),
-//         image: imagePreview,
-//       });
+    try {
+      
+      sendMessage(text.trim(), selectedChatRoom?.id || 0);
 
-//       // Clear form
-//       setText("");
-//       setImagePreview(null);
-//       if (fileInputRef.current) fileInputRef.current.value = "";
-//     } catch (error) {
-//       console.error("Failed to send message:", error);
-//     }
+      // Clear form
+      setText("");
+      setImagePreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+
+    } catch (error) {
+      console.error("Failed to send message:", error);
+    }
    };
 
   return (
@@ -80,6 +84,7 @@ const MessageInput = () => {
             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
             placeholder="Type a message..."
             value={text}
+            disabled={isMessagesLoading}
             onChange={(e) => setText(e.target.value)}
           />
           <input
