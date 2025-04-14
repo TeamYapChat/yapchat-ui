@@ -51,7 +51,7 @@ const SearchResultList = ({
           error={error}
         />
       )}
-      <div className="flex flex-col gap-4 overflow-y-auto max-h-64 border-gray-300 rounded-lg border-2 p-4">
+      <div className="flex flex-col gap-4 overflow-y-auto max-h-64 min-h-fit border-gray-300 rounded-lg border-2 p-4">
         {results.length === 0 ? (
           <div className="opacity-70">No members added</div>
         ) : (

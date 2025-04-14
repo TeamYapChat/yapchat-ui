@@ -8,7 +8,9 @@ const PrivateRoute = () => {
     (state: RootState) => state.auth.isAuthenticated
   );
   
-  return isAuthenticated ? <Outlet /> : <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} />;
+  const redirectPath = location.pathname && location.search ? location.pathname + location.search : "/";
+
+  return isAuthenticated ? <Outlet /> : <Navigate to={`/login?redirect=${encodeURIComponent(redirectPath)}`} />;
 };
 
 export default PrivateRoute;

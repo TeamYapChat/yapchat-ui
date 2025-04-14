@@ -11,11 +11,11 @@ interface ChatRoomListProps {
   showOnlineOnly: boolean;
 }
 
-const ChatRoomList = ({showOnlineOnly ,shownChatRooms, handleChatClicked, selectedChatRoom, user, onlineUsers} : ChatRoomListProps) => {
+const ChatRoomList = ({showOnlineOnly ,shownChatRooms, handleChatClicked, selectedChatRoom, user} : ChatRoomListProps) => {
 
   return (
     <div className="overflow-y-auto w-full pb-3">
-      {shownChatRooms == null || shownChatRooms?.length === 0 && !showOnlineOnly  ? <div className="text-center text-zinc-500 py-4 text-xs md:textarea-md">No conversation</div> : shownChatRooms.map((chatRoom) => (
+      {shownChatRooms == null || shownChatRooms?.length === 0 && !showOnlineOnly ? <div className="text-center text-zinc-500 py-4 text-xs md:textarea-md">No conversation</div> : shownChatRooms.map((chatRoom) => (
         <button
           key={chatRoom.id}
           onClick={() => handleChatClicked(chatRoom)}
@@ -27,12 +27,13 @@ const ChatRoomList = ({showOnlineOnly ,shownChatRooms, handleChatClicked, select
         >
           <div className="relative mx-auto lg:mx-0">
             <img
-              src={chatRoom.type === 'dm' ? 
-                  chatRoom.participants.filter(users => users.id != user?.id).length !== 0 ? chatRoom.participants.filter(users => users.id != user?.id)[0].image_url :  chatRoom.participants[0].image_url : defaultAvatar}
+              src={ chatRoom.image_url ? chatRoom.image_url: chatRoom?.type === 'group'
+                ? chatRoom.image_url ?? defaultAvatar
+                : chatRoom?.participants.filter(users => users.id !== user?.id)[0].image_url ?? defaultAvatar}
               alt={chatRoom.name}
-              className="size-12 object-cover rounded-full"
+              className="size-12 min-w-[3rem] object-cover rounded-full"
             />
-            {chatRoom.participants.some(friend => friend.id !== user?.id && onlineUsers.includes(friend.id)) && (
+            {chatRoom.participants.some(mem => mem.is_online == true && mem.id !== user?.id) && (
               <span
                 className="absolute bottom-0 right-0 size-3 bg-green-500 
                 rounded-full ring-1 ring-zinc-900"
@@ -44,7 +45,7 @@ const ChatRoomList = ({showOnlineOnly ,shownChatRooms, handleChatClicked, select
           <div className="hidden lg:block text-left min-w-0">
             <div className="font-medium truncate">{chatRoom.name}</div>
             <div className="text-xs text-zinc-400">
-              {chatRoom.participants.some(friend => friend.id !== user?.id && onlineUsers.includes(friend.id)) ? "Online" : "Offline"}
+              {chatRoom.participants.some(mem => mem.is_online == true && mem.id !== user?.id) ? "Online" : "Offline"}
             </div>
           </div>
         </button>

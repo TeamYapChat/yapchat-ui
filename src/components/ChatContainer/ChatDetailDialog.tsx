@@ -11,13 +11,12 @@ interface ChatDetailDialogProps {
   isShowConfirm?: boolean;
   handleCloseConfirm?: () => void;
   handleShowConfirm?: () => void;
+  inviteCode?: string | null;
 }
 
-const ChatDetailDialog = ({ isShowConfirm, handleCloseConfirm, handleShowConfirm, isLoading ,chatRoom, handleLeaveChatRoom, handleCopyInviteLink, successMessage, errorMessage }: ChatDetailDialogProps) => {
+const ChatDetailDialog = ({ inviteCode,isShowConfirm, handleCloseConfirm, handleShowConfirm, isLoading ,chatRoom, handleLeaveChatRoom, handleCopyInviteLink, successMessage, errorMessage }: ChatDetailDialogProps) => {
 
-  // fetch the code from BE
-
-  const inviteLink = `${window.location.origin}/invite/${chatRoom.id}/abc123`;
+  const inviteLink = `${window.location.origin}/invite?id=${chatRoom.id}&code=${inviteCode}`;
 
   return (
     <dialog id="chat_detail_dialog" className="modal">
@@ -29,7 +28,7 @@ const ChatDetailDialog = ({ isShowConfirm, handleCloseConfirm, handleShowConfirm
         </form>
 
         {/* Chat room name */}
-        <h1 className="font-bold text-lg text-center">{chatRoom.name}</h1>
+        <h1 className="font-bold text-lg text-center w-full px-2 inline-block truncate">{chatRoom.name}</h1>
 
         {/* Invite link */}
         <div className="space-y-2">
@@ -44,7 +43,7 @@ const ChatDetailDialog = ({ isShowConfirm, handleCloseConfirm, handleShowConfirm
               readOnly
             />
             <button
-              className="btn btn-primary h-full"
+              className="btn btn-neutral h-full"
               onClick={() => handleCopyInviteLink(inviteLink)}
             >
               Copy
@@ -52,14 +51,12 @@ const ChatDetailDialog = ({ isShowConfirm, handleCloseConfirm, handleShowConfirm
           </div>
 
           {/* Success or error message */}
-          <div className="h-6">
             {successMessage && (
               <p className="text-sm text-green-500 px-2 animate-fade-in">{successMessage}</p>
             )}
             {errorMessage && (
               <p className="text-sm text-red-500 px-2 animate-fade-in">{errorMessage}</p>
             )}
-          </div>
         </div>
 
         {/* Members list */}
@@ -73,12 +70,12 @@ const ChatDetailDialog = ({ isShowConfirm, handleCloseConfirm, handleShowConfirm
         </div>
 
         {/* Leave chat room */}
-        <div className="min-h-[120px] grid place-items-center w-full">
+        <div className="grid min-w-[80px] place-items-center w-full">
           { isShowConfirm ? (
               <div className="flex flex-col w-full items-center animate-fade-in">
                 <p className="text-md font-bold text-black px-2">Are you sure?</p>
                 <div className="flex gap-4 w-full justify-center">
-                  <button className="btn btn-primary w-1/3 text-off-white my-4" onClick={handleCloseConfirm}>
+                  <button className="btn btn-neutral w-1/3 text-off-white my-4" onClick={handleCloseConfirm}>
                     Cancel
                   </button>
                   <button className="btn btn-error w-1/3 text-off-white my-4" onClick={() => handleLeaveChatRoom(chatRoom.id)}>

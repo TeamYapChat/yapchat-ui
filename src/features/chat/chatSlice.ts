@@ -17,6 +17,7 @@ interface ChatState {
   selectedChatRoom: ChatRoomType | null;
   isMessagesLoading: boolean;
   messages: MessageType[];
+  isUploadingProfile: boolean;
 }
 
 const initialState: ChatState = {
@@ -27,6 +28,7 @@ const initialState: ChatState = {
   selectedChatRoom: null,
   isMessagesLoading: true,
   messages: [],
+  isUploadingProfile: false,
 };
 
 export const fetchAsyncGetChatRooms = createAsyncThunk<ChatRoomGetResponseType>(
@@ -61,6 +63,13 @@ export const fetchAsyncLeaveChatRoom = createAsyncThunk<
     return response;
 });
 
+export const fetchAsyncUploadImage = createAsyncThunk<string, File>(
+  "chat/uploadImage",
+  async (image) => {
+    const response = await chatApis.uploadImage(image);
+    return response;
+  }
+);
 
 const chatSlice = createSlice({
   name: "chat",
@@ -168,6 +177,23 @@ const chatSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || "Failed to leave chat room";
       }
+    );
+    // Upload image
+    builder.addCase(fetchAsyncUploadImage.pending, (state) => {
+      state.isUploadingProfile = true;
+    });
+    builder.addCase(
+      fetchAsyncUploadImage.fulfilled,
+      (state, action: PayloadAction<string>) => {
+        state.isUploadingProfile = false;
+        state.error = null;
+        console.log("Image uploaded successfully:", action.payload);
+      }
+    );
+    builder.addCase(fetchAsyncUploadImage.rejected, (state, action) => {
+      state.isUploadingProfile = false;
+      state.error = action.error.message || "Failed to upload image";
+    }
     );
   },
 });

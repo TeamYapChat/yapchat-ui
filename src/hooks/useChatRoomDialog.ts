@@ -1,18 +1,42 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../features/store";
 import { fetchAsyncLeaveChatRoom } from "../features/chat/chatSlice";
 import { useSelector } from 'react-redux';
 import { RootState } from '../features/store';
+import chatApis from '../api/chatApis';
+import { ChatRoomInviteCodeResponseType } from '../types/chatType';
 
 const useChatRoomDialog = () => {
       const [successMessage, setSuccessMessage] = useState<string | null>(null);
       const [errorMessage, setErrorMessage] = useState<string | null>(null);
       const [isShowConfirm, setIsShowConfirm] = useState<boolean>(false);
+      const [inviteCode, setInviteCode] = useState<string | null>(null);
 
       const dispatch = useDispatch<AppDispatch>();
 
-      const {isLoading} = useSelector((state: RootState) => state.chat);
+      const {isLoading, selectedChatRoom} = useSelector((state: RootState) => state.chat);
+
+      useEffect(() => {
+        const fetchInviteCode = async () => {
+          if (selectedChatRoom?.id !== undefined) {
+            try {
+              const response : ChatRoomInviteCodeResponseType = await chatApis.getInviteCode(selectedChatRoom.id);
+              if (response.success) {
+                // Only access 'data' if the response is successful
+                setInviteCode(response.data); // Assuming response.data is the invite code
+              } else {
+                // Handle error if needed (e.g., show error message)
+                console.error("Error:", response.message);
+              }
+            } catch (error) {
+              console.error("Error fetching invite code:", error);
+            }
+          }
+        };
+    
+        fetchInviteCode();
+      }, [selectedChatRoom]);
   
       const handleCopyInviteLink = async (inviteLink: string) => {
         try {
@@ -47,6 +71,7 @@ const useChatRoomDialog = () => {
             setSuccessMessage(null);
           }
       }
+
       return {
         successMessage,
         setSuccessMessage,
@@ -59,6 +84,7 @@ const useChatRoomDialog = () => {
         isShowConfirm,
         handleCloseConfirm,
         handleShowConfirm,
+        inviteCode,
       }
 }
 

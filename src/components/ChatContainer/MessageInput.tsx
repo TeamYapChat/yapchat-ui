@@ -42,7 +42,6 @@ const MessageInput = () => {
     if (!text.trim() && !imagePreview) return;
 
     try {
-      
       sendMessage(text.trim(), selectedChatRoom?.id || 0);
 
       // Clear form
@@ -51,7 +50,8 @@ const MessageInput = () => {
       if (fileInputRef.current) fileInputRef.current.value = "";
 
     } catch (error) {
-      console.error("Failed to send message:", error);
+      const err = error as Error;
+      toast.error(`Failed to send message: ${err.message}`);
     }
    };
 

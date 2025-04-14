@@ -64,7 +64,6 @@ export const ChatSocketProvider = ({ children }: { children: React.ReactNode }) 
       // Listen for messages from the server
       ws.current.onmessage = (event) => {
         const data = JSON.parse(event.data) as MessageType;
-        console.log("Received message:", data);
         dispatch(receiveNewMessage(data));
       }
   

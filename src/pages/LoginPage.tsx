@@ -17,7 +17,7 @@ const LogInPage = () => {
            <SignIn
             fallback={<span className="loading loading-spinner loading-xl"></span>}
             signUpUrl='/signup'
-            forceRedirectUrl={encodeURIComponent(redirectUrl.substring(1))}
+            forceRedirectUrl={redirectUrl.substring(1)}
             appearance={{
               elements: {
                 formButtonPrimary: "bg-off-white/30 hover:scale-105 hover:bg-transparent duration-200 text-black font-bold border-none outline-none shadow-none",

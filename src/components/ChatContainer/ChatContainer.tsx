@@ -25,6 +25,9 @@ const ChatContainer = () => {
     isShowConfirm,
     handleCloseConfirm,
     handleShowConfirm,
+    setSuccessMessage,
+    setErrorMessage,
+    inviteCode
   } = useChatRoomDialog();
 
   useEffect(() => {
@@ -42,6 +45,8 @@ const ChatContainer = () => {
     const dialog = document?.getElementById(
       "chat_detail_dialog"
     ) as HTMLDialogElement | null;
+    setSuccessMessage(null);
+    setErrorMessage(null);
     dialog?.showModal();
   };
 
@@ -56,9 +61,9 @@ const ChatContainer = () => {
   }
 
   return (
-    <div className="flex-1 flex flex-col overflow-auto">
+    <div className="flex-1 flex flex-col overflow-hidden w-full">
       {/* Chat Header */}
-      <div onClick={handleHeaderClick} className="cursor-pointer">
+      <div onClick={handleHeaderClick} className="cursor-pointer w-full">
         <ChatHeader />
       </div>
 
@@ -73,6 +78,7 @@ const ChatContainer = () => {
         isShowConfirm={isShowConfirm}
         handleCloseConfirm={handleCloseConfirm}
         handleShowConfirm={handleShowConfirm}
+        inviteCode={inviteCode}
       />
 
       <MessageDisplay

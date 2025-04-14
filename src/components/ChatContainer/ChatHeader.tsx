@@ -8,9 +8,11 @@ import defaultImage from "../../assets/avatar.png";
 import { UserData } from "../../types/userData";
 
 const ChatHeader = () => {
-    const { selectedChatRoom, onlineUsers } = useSelector((state: RootState) => state.chat);
+    const { selectedChatRoom } = useSelector((state: RootState) => state.chat);
     const {user} = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
+
+    console.log("selectedChatRoom", selectedChatRoom);
 
     const selectedUser : UserData | undefined= selectedChatRoom?.participants.filter(users => users.id != user?.id)[0];
   
@@ -19,19 +21,26 @@ const ChatHeader = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* Avatar */}
-          <div className="avatar">
-            <div className="size-10 rounded-full relative">
+          <div className="avatar relative">
+            <div className="size-10 rounded-full">
               <img src={selectedChatRoom?.type === 'dm' ? 
-                selectedUser ?  selectedUser?.image_url : selectedChatRoom?.participants[0].image_url : defaultImage} 
+                selectedUser ? selectedUser?.image_url : selectedChatRoom?.participants[0].image_url : 
+                selectedChatRoom?.image_url || defaultImage} 
                 alt={setSelectedChatRoom.name} />
+                
+                {selectedChatRoom?.participants.some(mem => mem.is_online == true) && (
+                <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-1 ring-zinc-900" />
+            )}
             </div>
           </div>
 
-          {/* User info */}
+          {/*Name & Status*/}
           <div>
-            <h3 className="font-medium">{selectedUser?.username || selectedChatRoom?.name}</h3>
+            <div className="max-w-[150px] md:max-w-[500px] xl:max-w-[700px] w-full">
+              <h3 className="font-medium truncate">{selectedChatRoom?.name}</h3>
+            </div>
             <p className="text-sm text-base-content/70">
-              {selectedUser?.id && onlineUsers.includes(selectedUser.id) ? "Online" : "Offline"}
+              {selectedChatRoom?.participants.some(mem => mem.is_online == true) ? "Online" : "Offline"}
             </p>
           </div>
         </div>

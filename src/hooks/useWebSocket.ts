@@ -32,11 +32,8 @@ import { getClerk } from "../lib/clerk";
         };
 
         ws.current.onmessage = (event) => {
-          console.log("WebSocket instance:", ws.current);
-
           const message = JSON.parse(event.data);
           dispatch(receiveNewMessage(message));
-            console.log("New message received:", message);
         };
 
         ws.current.onclose = () => {
@@ -61,7 +58,6 @@ import { getClerk } from "../lib/clerk";
           }
 
           ws.current?.send(JSON.stringify(dispatchPayload));
-        console.log("Message sent:", dispatchPayload);
     }
 
     return { subscribeToMessages, unsubscribeFromMessages, sendMessage };

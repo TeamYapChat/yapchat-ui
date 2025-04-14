@@ -45,7 +45,7 @@ function App() {
       <Routes>
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/invite/:id/:code" element={<InviteHandlerPage />} />
+          <Route path="/invite" element={<InviteHandlerPage />} />
         </Route>
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />

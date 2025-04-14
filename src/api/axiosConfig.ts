@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
    async(config) => {
     const clerk = await getClerk();
     const token = await clerk.session?.getToken();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

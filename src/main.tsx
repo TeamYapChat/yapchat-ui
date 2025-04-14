@@ -6,18 +6,16 @@ import { Provider } from "react-redux";
 import { store } from "./features/store.ts";
 import { ClerkProvider } from '@clerk/clerk-react'
 
-// import { injectStore } from "./api/axiosConfig.js";
+async function initApp() {
+  const res = await fetch("/config.json");
+  const config = await res.json();
+  const PUBLISHABLE_KEY = config.CLERK_PUBLISHABLE_KEY;
 
-// Import your Publishable Key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+  if (!PUBLISHABLE_KEY) {
+    throw new Error("Missing Clerk Publishable Key in clerk-config.json");
+  }
 
-if (!PUBLISHABLE_KEY) {
-  throw new Error('Add your Clerk Publishable Key to the .env file')
-}
-
-// injectStore(store);
-
-createRoot(document.getElementById("root")!).render(
+  createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
@@ -25,4 +23,7 @@ createRoot(document.getElementById("root")!).render(
         </ClerkProvider>
       </Provider>
     </BrowserRouter>
-);
+  );
+}
+
+initApp();

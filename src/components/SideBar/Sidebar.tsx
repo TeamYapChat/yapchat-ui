@@ -32,7 +32,10 @@ const Sidebar = () => {
     handleSearchClicked,
     handleAddClicked,
     handleRemoveClicked,
-    handleCreatetChatClicked
+    handleCreatetChatClicked,
+    isUploadingProfile,
+    selectedImg,
+    handleImageUpload
   } = useDialog();
 
   if (isLoading) return <SidebarSkeleton />;
@@ -40,7 +43,18 @@ const Sidebar = () => {
   return (
     <aside className="h-full w-20 lg:w-72 bg-off-white/70 border-r border-base-300 flex flex-col transition-all duration-200 animate-fade-in">
       
-    <StartNewChatDialog isSearching={isSearching} chatName={chatName} setChatName={setChatName} error={error} handleRemoveClicked={handleRemoveClicked} handleAddClicked={handleAddClicked} handleSearchClicked={handleSearchClicked} results={results} handleCreatetChatClicked={handleCreatetChatClicked} setInputTerm={setInputTerm} inputTerm={inputTerm} user={foundUser}/>
+    <StartNewChatDialog isSearching={isSearching} chatName={chatName} setChatName={setChatName} error={error} 
+                        handleRemoveClicked={handleRemoveClicked} 
+                        handleAddClicked={handleAddClicked} 
+                        handleSearchClicked={handleSearchClicked} 
+                        results={results} 
+                        handleCreatetChatClicked={handleCreatetChatClicked} 
+                        setInputTerm={setInputTerm} 
+                        inputTerm={inputTerm} 
+                        user={foundUser}
+                        isUploadingProfile={isUploadingProfile}
+                        selectedImg={selectedImg}
+                        handleImageUpload={handleImageUpload}/>
 
     <div className="border-b border-base-300 w-full p-4">
 
