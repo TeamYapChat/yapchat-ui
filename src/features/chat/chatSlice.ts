@@ -16,8 +16,13 @@ interface ChatState {
   error: string | null;
   selectedChatRoom: ChatRoomType | null;
   isMessagesLoading: boolean;
+  isMoreMessagesLoading: boolean;
   messages: MessageType[];
   isUploadingProfile: boolean;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalRows: number;
 }
 
 const initialState: ChatState = {
@@ -29,6 +34,11 @@ const initialState: ChatState = {
   isMessagesLoading: true,
   messages: [],
   isUploadingProfile: false,
+  page: 0,
+  pageSize: 25,
+  totalPages: 0,
+  totalRows: 0,
+  isMoreMessagesLoading: false,
 };
 
 export const fetchAsyncGetChatRooms = createAsyncThunk<ChatRoomGetResponseType>(
@@ -49,11 +59,14 @@ export const fetchAsyncCreateChatRoom = createAsyncThunk<
 
 export const fetchAsyncGetMessagesByChatRoomId = createAsyncThunk<
   MessageGetResponseType,
-  number
->("chat/getMessagesByChatRoomId", async (chatRoomId) => {
-  const response = await chatApis.getMessagesByChatRoomId(chatRoomId);
-  return response;
-});
+  { chatRoomId: number; page: number }
+>(
+  "chat/getMessagesByChatRoomId",
+  async ({ chatRoomId, page }) => {
+    const response = await chatApis.getMessagesByChatRoomId(chatRoomId, page, 25);
+    return response;
+  }
+);
 
 export const fetchAsyncLeaveChatRoom = createAsyncThunk<
     ChatRoomCreateResponseType,
@@ -83,9 +96,15 @@ const chatSlice = createSlice({
       action: PayloadAction<ChatRoomType | null>
     ) => {
       state.selectedChatRoom = action.payload;
+      state.messages = [];
+      state.page = 0;
+      state.pageSize = 25;
+      state.totalPages = 0;
     },
     receiveNewMessage: (state, action: PayloadAction<MessageType>) => {
-      state.messages.push(action.payload);
+      if (state.selectedChatRoom && state.selectedChatRoom.id === action.payload.room_id) {
+        state.messages.push(action.payload);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -135,19 +154,39 @@ const chatSlice = createSlice({
     });
     // Get messages by chat room id
     builder.addCase(fetchAsyncGetMessagesByChatRoomId.pending, (state) => {
-      state.isMessagesLoading = true;
+      if (state.page ===0){
+        state.isMessagesLoading = true;
+      }
+      else{
+        state.isMoreMessagesLoading = true;
+      }
     });
     builder.addCase(
       fetchAsyncGetMessagesByChatRoomId.fulfilled,
       (state, action: PayloadAction<MessageGetResponseType>) => {
         state.isMessagesLoading = false;
+        state.isMoreMessagesLoading = false;
         state.error = null;
+    
+        console.log("Messages fetched successfully:", action.payload);
+    
         if ("data" in action.payload && action.payload.data) {
-          state.messages = action.payload.data.sort((a, b) => {
-            return (
-              new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-            );
+          const fetchedMessages = action.payload.data.sort((a, b) => {
+            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
           });
+    
+          // Merge the old messages with the new ones, sort them again.
+          state.messages = [
+            ...state.messages,
+            ...fetchedMessages
+          ].sort((a, b) => {
+            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+          });
+    
+          state.page = action.payload.page;
+          state.pageSize = action.payload.page_size;
+          state.totalPages = action.payload.total_pages;
+          state.totalRows = action.payload.total_rows;
         }
       }
     );
@@ -155,6 +194,7 @@ const chatSlice = createSlice({
       fetchAsyncGetMessagesByChatRoomId.rejected,
       (state, action) => {
         state.isMessagesLoading = false;
+        state.isMoreMessagesLoading = false;
         state.error = action.error.message || "Failed to fetch messages";
       }
     );

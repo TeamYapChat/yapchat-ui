@@ -20,13 +20,22 @@ interface MessageType {
     content: string;
     sender_id: string;
     timestamp: Date;
+    room_id: number;
+}
+
+interface MessageGetSuccessResponseType {
+    data: MessageType[];
+    page: number;
+    page_size: number;
+    total_pages: number;
+    total_rows: number;
 }
 
 
 type ChatRoomGetResponseType<T = ChatRoomType[]> = SuccessResponseType <T> | ErrorResponseType;
 type ChatRoomGetByIdResponseType<T = ChatRoomType> = SuccessResponseType <T> | ErrorResponseType;
 type ChatRoomCreateResponseType<T = string> = SuccessResponseType <T> | ErrorResponseType;
-type MessageGetResponseType<T = MessageType[]> = SuccessResponseType <T> | ErrorResponseType;
+type MessageGetResponseType = MessageGetSuccessResponseType | ErrorResponseType;
 type ChatRoomLeaveResponseType<T = string> = SuccessResponseType <T> | ErrorResponseType;
 type ChatRoomInviteCodeResponseType<T = string> = SuccessResponseType<T> | ErrorResponseType;
 type ChatRoomJoinResponseType<T = string> = SuccessResponseType<T> | ErrorResponseType;

@@ -28,7 +28,7 @@ const InviteHandlerPage = () => {
     }
     else{
       // fetch chat room data using chatRoomId
-      chatApis.getChatRoomById(Number(chatRoomId)).then((response) => { 
+      chatApis.getChatRoomById(Number(chatRoomId), inviteCode).then((response) => { 
         if (response.success) {
           setChatRoom(response.data);
         }
@@ -93,7 +93,10 @@ const InviteHandlerPage = () => {
           </div>
         </div>
 
-        <button className="btn btn-neutral h-full w-[80%] mt-6" onClick={handleAcceptInviteClick}>Accept Invite</button>
+        <button className="relative btn h-full w-[80%] mt-6 group hover:text-white transition-all duration-300" onClick={handleAcceptInviteClick}>
+          <span className="relative z-10">Accept Invite</span>
+          <span className="h-full w-0 absolute top-0 left-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-blue-400 to-purple-400"></span>
+        </button>
 
       </div>}
       

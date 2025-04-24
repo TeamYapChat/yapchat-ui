@@ -50,9 +50,9 @@ const chatApis = {
     );
     return response.data;
   },
-  getMessagesByChatRoomId: async (chatRoomId: number) => {
+  getMessagesByChatRoomId: async (chatRoomId: number, page:number = 1, pageSize:number = 25) => {
     const response = await axiosInstance.get<MessageGetResponseType>(
-      `/v1/chatrooms/${chatRoomId}/messages`
+      `/v1/chatrooms/${chatRoomId}/messages?page=${page}&page_size=${pageSize}`
     );
     return response.data;
   },
@@ -68,9 +68,9 @@ const chatApis = {
     );
     return response.data;
   },
-  getChatRoomById: async (chatRoomId: number) => {
+  getChatRoomById: async (chatRoomId: number, inviteCode: string) => {
     const response = await axiosInstance.get<ChatRoomGetByIdResponseType>(
-      `/v1/chatrooms/${chatRoomId}`
+      `/v1/chatrooms/${chatRoomId}?code=${inviteCode}`
     );
     return response.data;
   },

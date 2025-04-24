@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../features/store';
 import chatApis from '../api/chatApis';
 import { ChatRoomInviteCodeResponseType } from '../types/chatType';
+import { toast } from 'sonner';
 
 const useChatRoomDialog = () => {
       const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -66,6 +67,8 @@ const useChatRoomDialog = () => {
         if (fetchAsyncLeaveChatRoom.fulfilled.match(resultAction)) {
             const dialog = document.getElementById("chat_detail_dialog") as HTMLDialogElement | null;
             dialog?.close();
+            toast.success("You have left the chat room.");
+            setErrorMessage(null);
           } else {
             setErrorMessage("Failed to leave chat room. Please try again.");
             setSuccessMessage(null);

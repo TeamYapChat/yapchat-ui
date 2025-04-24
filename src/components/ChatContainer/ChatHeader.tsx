@@ -4,17 +4,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../features/store";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../features/store";
-import defaultImage from "../../assets/avatar.png";
-import { UserData } from "../../types/userData";
+import defaultAvatar from "../../assets/avatar.png";
 
 const ChatHeader = () => {
     const { selectedChatRoom } = useSelector((state: RootState) => state.chat);
     const {user} = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
-
-    console.log("selectedChatRoom", selectedChatRoom);
-
-    const selectedUser : UserData | undefined= selectedChatRoom?.participants.filter(users => users.id != user?.id)[0];
   
     return (
     <div className="p-2.5 border-b border-base-300">
@@ -23,12 +18,12 @@ const ChatHeader = () => {
           {/* Avatar */}
           <div className="avatar relative">
             <div className="size-10 rounded-full">
-              <img src={selectedChatRoom?.type === 'dm' ? 
-                selectedUser ? selectedUser?.image_url : selectedChatRoom?.participants[0].image_url : 
-                selectedChatRoom?.image_url || defaultImage} 
+              <img src={ selectedChatRoom?.image_url ? selectedChatRoom.image_url: selectedChatRoom?.type === 'group'
+                ? selectedChatRoom.image_url ?? defaultAvatar
+                : selectedChatRoom?.participants.filter(users => users.id !== user?.id)[0].image_url ?? defaultAvatar}
                 alt={setSelectedChatRoom.name} />
                 
-                {selectedChatRoom?.participants.some(mem => mem.is_online == true) && (
+                {selectedChatRoom?.participants.some(mem => mem.is_online == true && mem.id !== user?.id) && (
                 <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-1 ring-zinc-900" />
             )}
             </div>
@@ -40,7 +35,7 @@ const ChatHeader = () => {
               <h3 className="font-medium truncate">{selectedChatRoom?.name}</h3>
             </div>
             <p className="text-sm text-base-content/70">
-              {selectedChatRoom?.participants.some(mem => mem.is_online == true) ? "Online" : "Offline"}
+              {selectedChatRoom?.participants.some(mem => mem.is_online == true && mem.id !== user?.id) ? "Online" : "Offline"}
             </p>
           </div>
         </div>

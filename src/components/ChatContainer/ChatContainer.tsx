@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
@@ -11,8 +11,9 @@ import useChatRoomDialog from "../../hooks/useChatRoomDialog";
 
 const ChatContainer = () => {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [currentScrollY, setCurrentScrollY] = useState<number>(0);
   const { user } = useSelector((state: RootState) => state.auth);
-  const { isMessagesLoading, selectedChatRoom, messages } = useSelector(
+  const { isMessagesLoading, selectedChatRoom, messages, page, isMoreMessagesLoading, totalPages } = useSelector(
     (state: RootState) => state.chat
   );
   const {
@@ -32,14 +33,14 @@ const ChatContainer = () => {
 
   useEffect(() => {
     if (!selectedChatRoom) return;
-    dispatch(fetchAsyncGetMessagesByChatRoomId(selectedChatRoom.id));
+    dispatch(fetchAsyncGetMessagesByChatRoomId({chatRoomId: selectedChatRoom.id, page: 1}));
   }, [dispatch, selectedChatRoom]);
 
   useEffect(() => {
-    if (messageEndRef.current && messages) {
+    if (messageEndRef.current && messages && page === 1 && currentScrollY === 0) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [messages, page, currentScrollY]);
 
   const handleHeaderClick = () => {
     const dialog = document?.getElementById(
@@ -49,6 +50,11 @@ const ChatContainer = () => {
     setErrorMessage(null);
     dialog?.showModal();
   };
+
+  const loadMoreMessages = async (pageToLoad: number) => {
+    if (pageToLoad > totalPages) return;
+    await dispatch(fetchAsyncGetMessagesByChatRoomId({ chatRoomId: selectedChatRoom!.id, page: pageToLoad }));
+  }
 
   if (isMessagesLoading) {
     return (
@@ -86,6 +92,12 @@ const ChatContainer = () => {
         messageEndRef={messageEndRef}
         user={user}
         selectedChatRoom={selectedChatRoom}
+        isMoreMessagesLoading={isMoreMessagesLoading}
+        page={page}
+        totalPages={totalPages}
+        loadMoreMessages={loadMoreMessages}
+        setCurrentScrollY={setCurrentScrollY}
+        currentScrollY={currentScrollY} 
       />
 
       <MessageInput />
