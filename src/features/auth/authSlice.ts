@@ -63,6 +63,7 @@ const authSlice = createSlice({
     builder.addCase(fetchAsyncGetUser.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error.message || "Failed to fetch user data";
+      console.error("Error fetching user data:", action.error.message);
     }
     );
   },
