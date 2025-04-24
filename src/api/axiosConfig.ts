@@ -4,8 +4,8 @@ import axios from "axios";
 //import { logout } from "../features/auth/authSlice";
 import { getClerk } from "../lib/clerk"; 
 
-//const baseUrl = "https://api.yapchat.xyz";
-const baseUrl = "http://localhost:8080";
+const baseUrl = "https://api.yapchat.xyz";
+//const baseUrl = "http://localhost:8080";
 
 //let store: Store<RootState>;
 
@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
    async(config) => {
     const clerk = await getClerk();
     const token = await clerk.session?.getToken();
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    //await new Promise((resolve) => setTimeout(resolve, 2000));
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
