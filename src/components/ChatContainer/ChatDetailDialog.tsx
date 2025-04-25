@@ -1,5 +1,6 @@
 import { ChatRoomType } from "../../types/chatType";
 import UserCard from "../UserCard/UserCard";
+import { Link } from "react-router-dom";
 
 interface ChatDetailDialogProps {
   chatRoom: ChatRoomType;
@@ -64,7 +65,9 @@ const ChatDetailDialog = ({ inviteCode,isShowConfirm, handleCloseConfirm, handle
           <span className="text-sm px-2 text-zinc-400 self-start">Members</span>
           <div className="overflow-y-auto max-h-72 flex flex-col gap-6 p-4 w-full border border-purple-300 rounded-xl">
             {chatRoom.participants.map((member) => (
-              <UserCard key={member.id} user={member} />
+              <Link to={`/profile/${member.username}`} key={member.id}>
+                <UserCard user={member} />
+              </Link>
             ))}
           </div>
         </div>

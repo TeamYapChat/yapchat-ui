@@ -18,7 +18,7 @@ import { getClerk } from "../lib/clerk";
         ws.current.onopen = async () => {
           console.log("🟢 WebSocket connected");
 
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+        //  await new Promise((resolve) => setTimeout(resolve, 1000));
           
           const identifyPayload = {
             op: 1,
@@ -46,7 +46,7 @@ import { getClerk } from "../lib/clerk";
      };
 
     const sendMessage = async (message: string, id: number) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+      //  await new Promise((resolve) => setTimeout(resolve, 1000));
           
           const dispatchPayload = {
             op: 0,

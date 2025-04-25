@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../features/store";
-import { LogOut, MessageSquare } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SignedIn, UserButton, SignOutButton } from '@clerk/clerk-react'
 import { useClerk } from "@clerk/clerk-react";
+import logo from "../../assets/logo.png";
 
 const NavBar = () => {
   const isAuthenticated = useSelector(
@@ -21,10 +22,7 @@ const NavBar = () => {
         <div className="flex items-center justify-between h-full">
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
-              <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-primary" />
-              </div>
-              <h1 className="text-lg font-bold">Yap Chat</h1>
+                <img src={logo} alt="logo" className="size-32"/>
             </Link>
           </div>
 

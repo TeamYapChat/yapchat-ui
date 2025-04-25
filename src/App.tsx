@@ -13,6 +13,7 @@ import { AppDispatch } from "./features/store";
 import { setLogin } from "./features/auth/authSlice";
 import { useEffect } from "react";
 import InviteHandlerPage from "./pages/InviteHandlerPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/invite" element={<InviteHandlerPage />} />
+          <Route path="/profile/:username" element={<ProfilePage />} />
         </Route>
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />

@@ -82,7 +82,7 @@ export const fetchAsyncUploadImage = createAsyncThunk<string, File>(
     const response = await chatApis.uploadImage(image);
     return response;
   }
-);
+); 
 
 const chatSlice = createSlice({
   name: "chat",

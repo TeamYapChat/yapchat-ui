@@ -18,7 +18,7 @@ export const ChatSocketProvider = ({ children }: { children: React.ReactNode }) 
 
   const sendMessage = async (message: string, id: number) => {
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+   // await new Promise((resolve) => setTimeout(resolve, 1000));
       
       const dispatchPayload = {
         op: 0,
@@ -47,7 +47,7 @@ export const ChatSocketProvider = ({ children }: { children: React.ReactNode }) 
 
         console.log("🟢 WebSocket connected");
   
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+       // await new Promise((resolve) => setTimeout(resolve, 1000));
   
         const identifyPayload = {
           op: 1,

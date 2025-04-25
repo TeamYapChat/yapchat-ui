@@ -80,6 +80,13 @@ const chatApis = {
     );
     return response.data;
   },
+  getPublicUserProfile: async (username: string) => {
+    const response = await axiosInstance.get<UserDataResponse>(
+      `/v1/users/${username}`
+    );
+    console.log("response", response.data);
+    return response.data;
+  }
 };
 
 export default chatApis;
