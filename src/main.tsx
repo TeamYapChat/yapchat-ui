@@ -27,7 +27,7 @@ if (!PUBLISHABLE_KEY) {
 createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
-        <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <ClerkProvider publishableKey={"pk_test_cHJpbWFyeS1pZ3VhbmEtNzguY2xlcmsuYWNjb3VudHMuZGV2JA"}>
           <App />
         </ClerkProvider>
       </Provider>

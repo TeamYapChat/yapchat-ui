@@ -1,6 +1,6 @@
 import { Clerk } from '@clerk/clerk-js';
 
-const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const clerkPubKey = "pk_test_cHJpbWFyeS1pZ3VhbmEtNzguY2xlcmsuYWNjb3VudHMuZGV2JA";
 
 let clerkInstance: Clerk | null = null;
 let clerkLoaded = false;
