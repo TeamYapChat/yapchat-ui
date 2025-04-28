@@ -40,7 +40,7 @@ export const ChatSocketProvider = ({ children }: { children: React.ReactNode }) 
       const token = await clerk.session?.getToken();
 
       // Open websocket connection
-      ws.current = new WebSocket("ws://localhost:8080/ws");
+      ws.current = new WebSocket("wss://api.yapchat.xyz/ws");
       
       // When connected, send the identify payload
       ws.current.onopen = async () => {
