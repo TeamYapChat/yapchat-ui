@@ -19,17 +19,13 @@ RUN npm install
 # Copy the project files
 COPY . .
 
+RUN echo "VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}" > .env.production
+
 # Build the Vite application
 RUN npm run build
 
 # Stage 2: Serve the app with a lightweight HTTP server
 FROM node:23-alpine AS runner
-
-# Define the same build argument again for the runtime stage
-ARG VITE_CLERK_PUBLISHABLE_KEY
-
-# Set the environment variable for runtime
-ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
 
 # Set the working directory for serving
 WORKDIR /app
