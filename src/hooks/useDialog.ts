@@ -100,7 +100,8 @@ const useDialog = () => {
           return;
         }
         
-         let finalUploadedURL = uploadedURL;
+        let finalUploadedURL = uploadedURL;
+
         if (file !== null) {
           const uploadResult = await dispatch(fetchAsyncUploadImage(file));
           if (fetchAsyncUploadImage.fulfilled.match(uploadResult)) {
@@ -124,8 +125,20 @@ const useDialog = () => {
             return;
           }
         }
+        else{
+          const data : ChatRoomCreateType = {
+            name: chatName,
+            participant_ids: results.map(user => user.id),
+            type: results.length > 1 ? "group" : "dm",
+            image_url: null,
+          }
+          // Create chat room
+          const result = await dispatch(fetchAsyncCreateChatRoom(data));
+          if (fetchAsyncCreateChatRoom.fulfilled.match(result)) {
+            await dispatch(fetchAsyncGetChatRooms());
+          }
+        }
 
-       
         // Close dialog
         dialog?.close();
         // Clear search results

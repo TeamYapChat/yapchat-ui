@@ -20,9 +20,10 @@ interface StartNewChatDialogProps {
     isUploadingProfile: boolean;
     selectedImg: string | null;
     handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    isLoading: boolean;
 }
 
-const StartNewChatDialog = ({handleImageUpload, isSearching, chatName, setChatName, error, handleSearchClicked, handleAddClicked, handleRemoveClicked, results, handleCreatetChatClicked, setInputTerm, inputTerm, user, isUploadingProfile, selectedImg} : StartNewChatDialogProps) => {
+const StartNewChatDialog = ({isLoading, handleImageUpload, isSearching, chatName, setChatName, error, handleSearchClicked, handleAddClicked, handleRemoveClicked, results, handleCreatetChatClicked, setInputTerm, inputTerm, user, isUploadingProfile, selectedImg} : StartNewChatDialogProps) => {
     
   return (
     <dialog id="start_new_chat_dialog" className="modal">
@@ -81,7 +82,7 @@ const StartNewChatDialog = ({handleImageUpload, isSearching, chatName, setChatNa
 
         <SearchResultList isSearching={isSearching} error={error} results={results} user={user} handleAddClicked={handleAddClicked} handlRemoveClicked={handleRemoveClicked}/>
 
-        <button className="btn btn-neutral text-off-white my-4" disabled={results.length === 0} onClick={handleCreatetChatClicked}>
+        <button className="btn btn-neutral text-off-white my-4" disabled={results.length === 0 || isLoading} onClick={handleCreatetChatClicked}>
            Create chat
         </button>
 

@@ -54,7 +54,8 @@ const Sidebar = () => {
                         user={foundUser}
                         isUploadingProfile={isUploadingProfile}
                         selectedImg={selectedImg}
-                        handleImageUpload={handleImageUpload}/>
+                        handleImageUpload={handleImageUpload}
+                        isLoading={isLoading}/>
 
     <div className="border-b border-base-300 w-full p-4">
 
