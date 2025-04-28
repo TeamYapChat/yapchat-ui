@@ -72,11 +72,17 @@ const ProfilePage = () => {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center justify-between py-2 border-b border-zinc-700">
                   <span>Member Since</span>
-                  <span>{user?.created_at?.toISOString().split("T")[0] ?? "2025"}</span>
+                  <span>
+                    {user?.created_at?.toISOString().split("T")[0] ?? "2025"}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-2">
                   <span>Account Status</span>
-                  {user?.is_online ? (<span className="text-green-500">Online</span>) : (<span className="text-red-500">Offline</span>)}
+                  {user?.is_online ? (
+                    <span className="text-green-500">Online</span>
+                  ) : (
+                    <span className="text-red-500">Offline</span>
+                  )}
                 </div>
               </div>
             </div>

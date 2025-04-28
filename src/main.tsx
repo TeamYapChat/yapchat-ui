@@ -10,24 +10,28 @@ async function initApp() {
   //const res = await fetch("/config.json");
   //const config = await res.json();
 
-console.log("window type:", typeof window);
-console.log("Runtime Config:", window.__RUNTIME_CONFIG__);
-console.log("Clerk Key:", window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY);
+  console.log("window type:", typeof window);
+  console.log("Runtime Config:", window.__RUNTIME_CONFIG__);
+  console.log("Clerk Key:", window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY);
 
-const PUBLISHABLE_KEY =
-  window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY || "default-key";
-console.log("PUBLISHABLE_KEY: ", PUBLISHABLE_KEY);
+  const PUBLISHABLE_KEY =
+    window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY || "default-key";
+  console.log("PUBLISHABLE_KEY: ", PUBLISHABLE_KEY);
 
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Add your Clerk Publishable Key to the .env file");
-}
+  if (!PUBLISHABLE_KEY) {
+    throw new Error("Add your Clerk Publishable Key to the .env file");
+  }
 
-// injectStore(store);
+  // injectStore(store);
 
-createRoot(document.getElementById("root")!).render(
+  createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
-        <ClerkProvider publishableKey={"pk_test_cHJpbWFyeS1pZ3VhbmEtNzguY2xlcmsuYWNjb3VudHMuZGV2JA"}>
+        <ClerkProvider
+          publishableKey={
+            "pk_test_cHJpbWFyeS1pZ3VhbmEtNzguY2xlcmsuYWNjb3VudHMuZGV2JA"
+          }
+        >
           <App />
         </ClerkProvider>
       </Provider>

@@ -7,17 +7,18 @@ import background from "../assets/chat_bg.jpg";
 import { ChatSocketProvider } from "../features/context/ChatSocketContext";
 
 const HomePage = () => {
-
   const { selectedChatRoom } = useSelector((state: RootState) => state.chat);
 
-  return(
+  return (
     <main>
       <ChatSocketProvider>
         <div className="h-screen">
-
           {/* Background image and overlay */}
-          <img src={background} className="absolute inset-0 object-cover w-full h-full -z-20"/>
-          <div className="absolute inset-0 bg-white opacity-40 -z-10"></div> 
+          <img
+            src={background}
+            className="absolute inset-0 object-cover w-full h-full -z-20"
+          />
+          <div className="absolute inset-0 bg-white opacity-40 -z-10"></div>
 
           <div className="flex items-center justify-center pt-20 px-4 animate-fade-in">
             <div className="backdrop-blur-md bg-off-white/40 rounded-xl full-shadow w-full max-w-6xl h-[calc(100vh-8rem)] mt-4">
@@ -28,12 +29,11 @@ const HomePage = () => {
                 {!selectedChatRoom ? <NoChatSelected /> : <ChatContainer />}
               </div>
             </div>
-            </div>
           </div>
-
+        </div>
       </ChatSocketProvider>
     </main>
-  ) 
+  );
 };
 
 export default HomePage;

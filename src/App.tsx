@@ -37,10 +37,7 @@ function App() {
 
   return (
     <div className="flex flex-col overflow-auto">
-      <Toaster
-        position="top-right"
-        richColors
-      />
+      <Toaster position="top-right" richColors />
       {!hideNavOnRoutes.includes(location.pathname) && <NavBar />}
 
       <Routes>
