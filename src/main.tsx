@@ -7,8 +7,8 @@ import { store } from "./features/store.ts";
 import { ClerkProvider } from "@clerk/clerk-react";
 
 async function initApp() {
-  const res = await fetch("/config.json");
-  const config = await res.json();
+  //const res = await fetch("/config.json");
+  //const config = await res.json();
 
 console.log("window type:", typeof window);
 console.log("Runtime Config:", window.__RUNTIME_CONFIG__);
