@@ -4,7 +4,7 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./features/store.ts";
-import { ClerkProvider } from '@clerk/clerk-react'
+import { ClerkProvider } from "@clerk/clerk-react";
 
 async function initApp() {
   const res = await fetch("/config.json");
@@ -18,7 +18,7 @@ async function initApp() {
   createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
-        <ClerkProvider publishableKey="pk_test_cHJpbWFyeS1pZ3VhbmEtNzguY2xlcmsuYWNjb3VudHMuZGV2JA">
+        <ClerkProvider publishableKey={process.env.VITE_CLERK_PUBLISHABLE_KEY!}>
           <App />
         </ClerkProvider>
       </Provider>
