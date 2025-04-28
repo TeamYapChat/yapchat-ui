@@ -1,11 +1,6 @@
 # Stage 1: Build the Vite app
 FROM node:23-alpine AS build 
 
-# Define the build argument
-ARG VITE_CLERK_PUBLISHABLE_KEY
-
-# Set the environment variable for Vite
-ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
 
 # Set the working directory
 WORKDIR /react-app
@@ -18,8 +13,6 @@ RUN npm install
 
 # Copy the project files
 COPY . .
-
-RUN echo "VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}" > .env.production
 
 # Build the Vite application
 RUN npm run build
