@@ -1,4 +1,4 @@
-import { SuccessResponseType } from '../types/apiResponseType';
+import { SuccessResponseType } from "../types/apiResponseType";
 
 interface UserData {
   id: string;

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../features/store";
-import { fetchAsyncGetChatRooms, setSelectedChatRoom } from "../features/chat/chatSlice";
+import {
+  fetchAsyncGetChatRooms,
+  setSelectedChatRoom,
+} from "../features/chat/chatSlice";
 import { fetchAsyncGetUser } from "../features/auth/authSlice";
 import { AppDispatch } from "../features/store";
 import { ChatRoomType } from "../types/chatType";
@@ -25,11 +28,10 @@ const useChatList = () => {
   useEffect(() => {
     if (showOnlineOnly && user) {
       setShownChatRooms(
-        chatRooms.filter(
-          (chatRoom) =>
-            chatRoom.participants.some(
-              (friend) => friend.id !== user.id && onlineUsers.includes(friend.id)
-            )
+        chatRooms.filter((chatRoom) =>
+          chatRoom.participants.some(
+            (friend) => friend.id !== user.id && onlineUsers.includes(friend.id)
+          )
         )
       );
     } else {
@@ -37,7 +39,8 @@ const useChatList = () => {
     }
   }, [showOnlineOnly, chatRooms, onlineUsers, user]);
 
-  const handleChatClicked = (chatRoom: ChatRoomType) => dispatch(setSelectedChatRoom(chatRoom));
+  const handleChatClicked = (chatRoom: ChatRoomType) =>
+    dispatch(setSelectedChatRoom(chatRoom));
 
   return {
     isLoading,
@@ -47,7 +50,7 @@ const useChatList = () => {
     showOnlineOnly,
     setShowOnlineOnly,
     onlineUsers,
-    user
+    user,
   };
 };
 

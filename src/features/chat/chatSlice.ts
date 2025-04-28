@@ -60,20 +60,17 @@ export const fetchAsyncCreateChatRoom = createAsyncThunk<
 export const fetchAsyncGetMessagesByChatRoomId = createAsyncThunk<
   MessageGetResponseType,
   { chatRoomId: number; page: number }
->(
-  "chat/getMessagesByChatRoomId",
-  async ({ chatRoomId, page }) => {
-    const response = await chatApis.getMessagesByChatRoomId(chatRoomId, page, 25);
-    return response;
-  }
-);
+>("chat/getMessagesByChatRoomId", async ({ chatRoomId, page }) => {
+  const response = await chatApis.getMessagesByChatRoomId(chatRoomId, page, 25);
+  return response;
+});
 
 export const fetchAsyncLeaveChatRoom = createAsyncThunk<
-    ChatRoomCreateResponseType,
-    number
+  ChatRoomCreateResponseType,
+  number
 >("chat/leaveChatRoom", async (chatRoomId) => {
   const response = await chatApis.leaveChatRoom(chatRoomId);
-    return response;
+  return response;
 });
 
 export const fetchAsyncUploadImage = createAsyncThunk<string, File>(
@@ -82,7 +79,7 @@ export const fetchAsyncUploadImage = createAsyncThunk<string, File>(
     const response = await chatApis.uploadImage(image);
     return response;
   }
-); 
+);
 
 const chatSlice = createSlice({
   name: "chat",
@@ -102,7 +99,10 @@ const chatSlice = createSlice({
       state.totalPages = 0;
     },
     receiveNewMessage: (state, action: PayloadAction<MessageType>) => {
-      if (state.selectedChatRoom && state.selectedChatRoom.id === action.payload.room_id) {
+      if (
+        state.selectedChatRoom &&
+        state.selectedChatRoom.id === action.payload.room_id
+      ) {
         state.messages.push(action.payload);
       }
     },
@@ -154,10 +154,9 @@ const chatSlice = createSlice({
     });
     // Get messages by chat room id
     builder.addCase(fetchAsyncGetMessagesByChatRoomId.pending, (state) => {
-      if (state.page ===0){
+      if (state.page === 0) {
         state.isMessagesLoading = true;
-      }
-      else{
+      } else {
         state.isMoreMessagesLoading = true;
       }
     });
@@ -167,22 +166,26 @@ const chatSlice = createSlice({
         state.isMessagesLoading = false;
         state.isMoreMessagesLoading = false;
         state.error = null;
-    
+
         console.log("Messages fetched successfully:", action.payload);
-    
+
         if ("data" in action.payload && action.payload.data) {
           const fetchedMessages = action.payload.data.sort((a, b) => {
-            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+            return (
+              new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+            );
           });
-    
+
           // Merge the old messages with the new ones, sort them again.
-          state.messages = [
-            ...state.messages,
-            ...fetchedMessages
-          ].sort((a, b) => {
-            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-          });
-    
+          state.messages = [...state.messages, ...fetchedMessages].sort(
+            (a, b) => {
+              return (
+                new Date(a.timestamp).getTime() -
+                new Date(b.timestamp).getTime()
+              );
+            }
+          );
+
           state.page = action.payload.page;
           state.pageSize = action.payload.page_size;
           state.totalPages = action.payload.total_pages;
@@ -200,24 +203,20 @@ const chatSlice = createSlice({
     );
     // Leave chat room
     builder.addCase(fetchAsyncLeaveChatRoom.pending, (state) => {
-        state.isLoading = true;
-        });
-    builder.addCase(
-        fetchAsyncLeaveChatRoom.fulfilled,
-        (state) => {
-          state.isLoading = false;
-          state.error = null;
-          state.chatRooms = state.chatRooms.filter(
-            (room) => room.id !== state.selectedChatRoom?.id
-          );
-          state.selectedChatRoom = null;
-        }
+      state.isLoading = true;
+    });
+    builder.addCase(fetchAsyncLeaveChatRoom.fulfilled, (state) => {
+      state.isLoading = false;
+      state.error = null;
+      state.chatRooms = state.chatRooms.filter(
+        (room) => room.id !== state.selectedChatRoom?.id
       );
+      state.selectedChatRoom = null;
+    });
     builder.addCase(fetchAsyncLeaveChatRoom.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message || "Failed to leave chat room";
-      }
-    );
+      state.isLoading = false;
+      state.error = action.error.message || "Failed to leave chat room";
+    });
     // Upload image
     builder.addCase(fetchAsyncUploadImage.pending, (state) => {
       state.isUploadingProfile = true;
@@ -233,8 +232,7 @@ const chatSlice = createSlice({
     builder.addCase(fetchAsyncUploadImage.rejected, (state, action) => {
       state.isUploadingProfile = false;
       state.error = action.error.message || "Failed to upload image";
-    }
-    );
+    });
   },
 });
 

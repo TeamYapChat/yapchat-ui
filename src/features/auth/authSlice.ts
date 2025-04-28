@@ -10,7 +10,6 @@ interface AuthState {
   error: string | null;
 }
 
-
 // Initial state
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -48,24 +47,24 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-
     // Builder for fetch user's data
     builder.addCase(fetchAsyncGetUser.pending, (state) => {
       state.isLoading = true;
-    }
-    );
-    builder.addCase(fetchAsyncGetUser.fulfilled, (state, action: PayloadAction<UserDataResponse>) => {
-      state.isLoading = false;
-      if ("data" in action.payload) {
-        state.user = action.payload.data;
-      }
     });
+    builder.addCase(
+      fetchAsyncGetUser.fulfilled,
+      (state, action: PayloadAction<UserDataResponse>) => {
+        state.isLoading = false;
+        if ("data" in action.payload) {
+          state.user = action.payload.data;
+        }
+      }
+    );
     builder.addCase(fetchAsyncGetUser.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error.message || "Failed to fetch user data";
       console.error("Error fetching user data:", action.error.message);
-    }
-    );
+    });
   },
 });
 

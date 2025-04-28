@@ -50,7 +50,11 @@ const chatApis = {
     );
     return response.data;
   },
-  getMessagesByChatRoomId: async (chatRoomId: number, page:number = 1, pageSize:number = 25) => {
+  getMessagesByChatRoomId: async (
+    chatRoomId: number,
+    page: number = 1,
+    pageSize: number = 25
+  ) => {
     const response = await axiosInstance.get<MessageGetResponseType>(
       `/v1/chatrooms/${chatRoomId}/messages?page=${page}&page_size=${pageSize}`
     );
@@ -86,7 +90,7 @@ const chatApis = {
     );
     console.log("response", response.data);
     return response.data;
-  }
+  },
 };
 
 export default chatApis;
