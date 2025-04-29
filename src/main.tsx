@@ -10,9 +10,13 @@ async function initApp() {
   //const res = await fetch("/config.json");
   //const config = await res.json();
 
-  console.log("window type:", typeof window);
-  console.log("Runtime Config:", window.__RUNTIME_CONFIG__);
-  console.log("Clerk Key:", window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY);
+  // console.log("window type:", typeof window);
+  // console.log("Runtime Config:", window.__RUNTIME_CONFIG__);
+  // console.log("Clerk Key:", window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY);
+
+  // Force lightmode
+  document.documentElement.classList.remove("dark");
+  document.documentElement.classList.add("light");
 
   const PUBLISHABLE_KEY =
     window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY || "default-key";
