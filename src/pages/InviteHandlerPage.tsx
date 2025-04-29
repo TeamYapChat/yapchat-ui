@@ -49,6 +49,7 @@ const InviteHandlerPage = () => {
   }, [inviteCode, chatRoomId, navigate]);
 
   const handleAcceptInviteClick = () => {
+    setIsLoading(true);
     // Call api
     chatApis
       .acceptInvite(Number(chatRoomId), inviteCode!)
