@@ -8,7 +8,10 @@ import defaultAvatar from "../assets/avatar.png";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../features/store";
-import { fetchAsyncGetChatRooms, setSelectedChatRoom } from "../features/chat/chatSlice";
+import {
+  fetchAsyncGetChatRooms,
+  setSelectedChatRoom,
+} from "../features/chat/chatSlice";
 
 const InviteHandlerPage = () => {
   const location = useLocation();
@@ -53,19 +56,19 @@ const InviteHandlerPage = () => {
         if (response.success) {
           toast.success("You have joined the chat room!");
         }
+        // Set chat room data to redux store
+        dispatch(setSelectedChatRoom(chatRoom));
+        dispatch(fetchAsyncGetChatRooms());
       })
       .catch((error) => {
         toast.error(
           `Error: You've already been in this chat room or Unknown error occurs. Please try again. ${error.message}`
         );
+      })
+      .finally(() => {
+        setIsLoading(false);
+        navigate(`/`);
       });
-
-    // Set chat room data to redux store
-    dispatch(setSelectedChatRoom(chatRoom));
-    dispatch(fetchAsyncGetChatRooms());
-
-    // Navigate to chat room page
-    navigate(`/`);
   };
 
   return (
