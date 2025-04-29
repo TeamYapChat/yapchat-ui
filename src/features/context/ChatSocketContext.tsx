@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useEffect } from "react";
+import { createContext, useContext, useRef, useEffect, useState, useCallback } from "react";
 import { getClerk } from "../../lib/clerk";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
@@ -12,76 +12,78 @@ type ChatSocketContextType = {
 
 const ChatSocketContext = createContext<ChatSocketContextType | null>(null);
 
-export const ChatSocketProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const ChatSocketProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const ws = useRef<WebSocket | null>(null);
+  const [ws, setWs] = useState<WebSocket | null>(null);
+  const reconnectTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const sendMessage = async (message: string, id: number) => {
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-
+  const sendMessage = (message: string, id: number) => {
     const dispatchPayload = {
       op: 0,
       data: {
         content: message,
         room_id: id,
       },
-      timestamp: new Date(Date.now()).toISOString(),
+      timestamp: new Date().toISOString(),
     };
 
-    ws.current?.send(JSON.stringify(dispatchPayload));
-    console.log("Message sent:", dispatchPayload);
+    ws?.send(JSON.stringify(dispatchPayload));
+    console.log("📤 Message sent:", dispatchPayload);
   };
 
-  useEffect(() => {
-    const connectWebSocket = async () => {
-      // Prepare token for first message exchange
-      const clerk = await getClerk();
-      const token = await clerk.session?.getToken();
+  const connectWebSocket = useCallback(async () => {
+    const clerk = await getClerk();
+    const token = await clerk.session?.getToken();
 
-      // Open websocket connection
-      ws.current = new WebSocket("wss://api.yapchat.xyz/ws");
+    const socket = new WebSocket("wss://api.yapchat.xyz/ws");
 
-      // When connected, send the identify payload
-      ws.current.onopen = async () => {
-        console.log("🟢 WebSocket connected");
+    socket.onopen = () => {
+      console.log("🟢 WebSocket connected");
 
-        // await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        const identifyPayload = {
-          op: 1,
-          data: {
-            token: token,
-          },
-          timestamp: new Date().toISOString(),
-        };
-
-        ws.current?.send(JSON.stringify(identifyPayload));
+      const identifyPayload = {
+        op: 1,
+        data: {
+          token: token,
+        },
+        timestamp: new Date().toISOString(),
       };
 
-      // Listen for messages from the server
-      ws.current.onmessage = (event) => {
-        const data = JSON.parse(event.data) as MessageType;
-        dispatch(receiveNewMessage(data));
-      };
-
-      ws.current.onclose = () => {
-        console.log("🔴 WebSocket closed");
-      };
+      socket.send(JSON.stringify(identifyPayload));
     };
 
-    connectWebSocket();
-
-    return () => {
-      ws.current?.close();
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data) as MessageType;
+      dispatch(receiveNewMessage(data));
     };
+
+    socket.onerror = (error) => {
+      console.error("❗ WebSocket error:", error);
+      socket.close(); // Force close to trigger reconnect
+    };
+
+    socket.onclose = (event) => {
+      console.warn(`🔴 WebSocket closed. Reconnecting in 3s...`, event.reason);
+      reconnectTimer.current = setTimeout(() => {
+        connectWebSocket(); // Reconnect after delay
+      }, 3000);
+    };
+
+    setWs(socket); // ✅ Update ws in state to trigger re-render
   }, [dispatch]);
 
+  useEffect(() => {
+    connectWebSocket(); // connect on mount
+
+    return () => {
+      ws?.close();
+      if (reconnectTimer.current) {
+        clearTimeout(reconnectTimer.current);
+      }
+    };
+  }, [connectWebSocket]);
+
   return (
-    <ChatSocketContext.Provider value={{ ws: ws.current, sendMessage }}>
+    <ChatSocketContext.Provider value={{ ws, sendMessage }}>
       {children}
     </ChatSocketContext.Provider>
   );
