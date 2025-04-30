@@ -54,10 +54,10 @@ const MessageDisplay = ({
     const container = containerRef.current;
     container?.scrollTo({
       top:
-        container.scrollHeight - currentScrollY - container.offsetHeight + 100,
+        container.scrollHeight - currentScrollY - container.offsetHeight,
       behavior: "smooth",
     });
-  }, [messages]);
+  }, [page]);
 
   useEffect(() => {
     const container = containerRef.current;
