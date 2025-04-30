@@ -55,7 +55,7 @@ const MessageDisplay = ({
     const container = containerRef.current;
     container?.scrollTo({
       top:
-        container.scrollHeight - currentScrollY, // - container.offsetHeight > 0 ? container.scrollHeight - currentScrollY - container.offsetHeight : 0,// + 100, // +100 (shift down) to perfectly move bring the last message before loading more messages, to top of the screen
+        container.scrollHeight - currentScrollY - 2*container.offsetHeight, // > 0 ? container.scrollHeight - currentScrollY - container.offsetHeight : 0,// + 100, // +100 (shift down) to perfectly move bring the last message before loading more messages, to top of the screen
       behavior: "auto",
     });
   }, [page]); // watching the page because only when the page changes, we need to scroll to the latest message before loading
