@@ -43,7 +43,8 @@ const MessageDisplay = ({
       const scrollPosition = container.scrollTop;
 
       if (scrollPosition === 0 && !isMoreMessagesLoading) {
-        setCurrentScrollY(container.scrollHeight - container.scrollTop); // This is actually = scrollHeight , we are measuring from the bottom
+        //setCurrentScrollY(container.scrollHeight - container.scrollTop); // This is actually = scrollHeight , we are measuring from the bottom
+        setCurrentScrollY(container.scrollHeight);
         loadMoreMessages(page + 1);
       }
     }
