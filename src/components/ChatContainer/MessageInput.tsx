@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../features/store";
 import { useChatSocket } from "../../features/context/ChatSocketContext";
 
-const MessageInput = () => {
+interface MessageInputProps {
+  setCurrentScrollY: (scrollY: number) => void; // Set Y = 0 to trigger scroll to bottom when new message is sent
+}
+
+const MessageInput = ({setCurrentScrollY}:MessageInputProps) => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -46,6 +50,7 @@ const MessageInput = () => {
 
       // Clear form
       setText("");
+      setCurrentScrollY(0);
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
 

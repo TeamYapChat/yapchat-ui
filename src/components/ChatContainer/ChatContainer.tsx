@@ -37,10 +37,13 @@ const ChatContainer = () => {
   }, [dispatch, selectedChatRoom]);
 
   useEffect(() => {
-    if (messageEndRef.current && messages && page === 1 && currentScrollY === 0) {
+    if (messageEndRef.current && messages && currentScrollY === 0) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, page, currentScrollY]);
+    else if (!messages || !messageEndRef || messages.length === 0) { // when changing chat rooms, set current Y to 0 to scroll the screen to bottom
+      setCurrentScrollY(0);
+    }
+  }, [messages, currentScrollY]);
 
   const handleHeaderClick = () => {
     const dialog = document?.getElementById(
@@ -61,7 +64,7 @@ const ChatContainer = () => {
       <div className="flex-1 flex flex-col overflow-auto">
         <ChatHeader />
         <MessageSkeleton />
-        <MessageInput />
+        <MessageInput setCurrentScrollY={setCurrentScrollY}/>
       </div>
     );
   }
@@ -100,7 +103,7 @@ const ChatContainer = () => {
         currentScrollY={currentScrollY} 
       />
 
-      <MessageInput />
+      <MessageInput setCurrentScrollY={setCurrentScrollY}/>
     </div>
   );
 };

@@ -167,8 +167,6 @@ const chatSlice = createSlice({
         state.isMoreMessagesLoading = false;
         state.error = null;
 
-        console.log("Messages fetched successfully:", action.payload);
-
         if ("data" in action.payload && action.payload.data) {
           const fetchedMessages = action.payload.data.sort((a, b) => {
             return (

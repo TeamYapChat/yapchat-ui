@@ -3,7 +3,7 @@ import { formatMessageTime } from "../../lib/utils";
 import { UserData } from "../../types/userData";
 import { ChatRoomType, MessageType } from "../../types/chatType";
 import { LegacyRef } from "react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useLayoutEffect } from "react";
 
 interface MessageDisplayProps {
   messages: MessageType[];
@@ -30,7 +30,7 @@ const MessageDisplay = ({
   setCurrentScrollY,
   currentScrollY,
 }: MessageDisplayProps) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null); 
 
   const handleScroll = () => {
     const container = containerRef.current;
@@ -43,21 +43,21 @@ const MessageDisplay = ({
       const scrollPosition = container.scrollTop;
 
       if (scrollPosition === 0 && !isMoreMessagesLoading) {
+        setCurrentScrollY(container.scrollHeight - container.scrollTop); // This is actually = scrollHeight , we are measuring from the bottom
         loadMoreMessages(page + 1);
-        setCurrentScrollY(container.scrollHeight - container.scrollTop);
       }
     }
   };
 
   // Scroll the current oldest message to the bottom after loading more messages
-  useEffect(() => {
+  useLayoutEffect(() => { // run before the browser repaints the screen => scroll to the latest message to top of the screen
     const container = containerRef.current;
     container?.scrollTo({
       top:
-        container.scrollHeight - currentScrollY - container.offsetHeight,
-      behavior: "smooth",
+        container.scrollHeight - currentScrollY - container.offsetHeight > 0 ? container.scrollHeight - currentScrollY - container.offsetHeight : 0,// + 100, // +100 (shift down) to perfectly move bring the last message before loading more messages, to top of the screen
+      behavior: "auto",
     });
-  }, [page]);
+  }, [page]); // watching the page because only when the page changes, we need to scroll to the latest message before loading
 
   useEffect(() => {
     const container = containerRef.current;
