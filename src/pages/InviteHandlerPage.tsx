@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../features/store";
 import {
   fetchAsyncGetChatRooms,
+  fetchAsyncGetMessagesByChatRoomId,
   setSelectedChatRoom,
 } from "../features/chat/chatSlice";
 
@@ -65,6 +66,7 @@ const InviteHandlerPage = () => {
             if (response.success) {
               setChatRoom(response.data);
               dispatch(setSelectedChatRoom(chatRoom));
+              dispatch(fetchAsyncGetMessagesByChatRoomId({chatRoomId: Number(chatRoomId), page: 1}));
             }
           });
 
