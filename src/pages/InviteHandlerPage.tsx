@@ -58,7 +58,16 @@ const InviteHandlerPage = () => {
           toast.success("You have joined the chat room!");
         }
         // Set chat room data to redux store
-        dispatch(setSelectedChatRoom(chatRoom));
+
+        chatApis
+          .getChatRoomById(Number(chatRoomId), inviteCode!)
+          .then((response) => {
+            if (response.success) {
+              setChatRoom(response.data);
+              dispatch(setSelectedChatRoom(chatRoom));
+            }
+          });
+
         await dispatch(fetchAsyncGetChatRooms());
       })
       .catch((error) => {

@@ -24,6 +24,7 @@ const useDialog = () => {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
 
   const { isUploadingProfile } = useSelector((state: RootState) => state.chat);
+  const {user} = useSelector((state: RootState) => state.auth);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -141,9 +142,16 @@ const useDialog = () => {
         image_url: null,
       };
       // Create chat room
-      const result = await dispatch(fetchAsyncCreateChatRoom(data));
-      if (fetchAsyncCreateChatRoom.fulfilled.match(result)) {
-        await dispatch(fetchAsyncGetChatRooms());
+      if (foundUser?.id == user?.id) {
+        setError("You cannot create a chat room with yourself");
+        return;
+      }
+      else {
+        setError(null);
+        const result = await dispatch(fetchAsyncCreateChatRoom(data));
+        if (fetchAsyncCreateChatRoom.fulfilled.match(result)) {
+          await dispatch(fetchAsyncGetChatRooms());
+        }
       }
     }
 
