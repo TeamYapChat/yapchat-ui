@@ -1,5 +1,5 @@
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
-import { MessagesSquare, Users } from "lucide-react";
+import { MessagesSquare } from "lucide-react";
 import StartNewChatDialog from "./StartNewChatDialog";
 import ChatRoomList from "../SideBar/ChatRoomList";
 import useChatList from "../../hooks/useChatList";
