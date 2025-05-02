@@ -1,5 +1,5 @@
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
-import { Users } from "lucide-react";
+import { MessagesSquare, Users } from "lucide-react";
 import StartNewChatDialog from "./StartNewChatDialog";
 import ChatRoomList from "../SideBar/ChatRoomList";
 import useChatList from "../../hooks/useChatList";
@@ -60,8 +60,8 @@ const Sidebar = () => {
     <div className="border-b border-base-300 w-full p-4">
 
       <div className="flex items-center gap-2">
-        <Users className="hidden lg:block size-6" />
-        <span className="font-medium hidden lg:block text-md">Contacts</span>
+        <MessagesSquare className="hidden lg:block size-6" />
+        <span className="font-medium hidden lg:block text-md">Chats</span>
 
         <MessageCirclePlus className="block lg:hidden mx-auto" onClick={handleAddNewChatClicked}/>
         <button className="hidden lg:block btn btn-sm btn-ghost ml-auto" onClick={handleAddNewChatClicked}> Start new chat </button>
