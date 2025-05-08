@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getClerk } from "../lib/clerk";
 
+// TODO: Dynamically read base URL
 const baseUrl = "https://api.yapchat.xyz";
 
 const axiosInstance = axios.create({
@@ -16,7 +17,6 @@ axiosInstance.interceptors.request.use(
     const clerk = await getClerk();
     const token = await clerk.session?.getToken();
 
-    //await new Promise((resolve) => setTimeout(resolve, 2000));
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     } else {

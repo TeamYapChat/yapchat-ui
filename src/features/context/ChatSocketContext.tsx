@@ -1,4 +1,11 @@
-import { createContext, useContext, useRef, useEffect, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { getClerk } from "../../lib/clerk";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
@@ -12,7 +19,11 @@ type ChatSocketContextType = {
 
 const ChatSocketContext = createContext<ChatSocketContextType | null>(null);
 
-export const ChatSocketProvider = ({ children }: { children: React.ReactNode }) => {
+export const ChatSocketProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [ws, setWs] = useState<WebSocket | null>(null);
   const reconnectTimer = useRef<NodeJS.Timeout | null>(null);
@@ -35,6 +46,7 @@ export const ChatSocketProvider = ({ children }: { children: React.ReactNode }) 
     const clerk = await getClerk();
     const token = await clerk.session?.getToken();
 
+    // TODO: Dynamically read WebSocket URL
     const socket = new WebSocket("wss://api.yapchat.xyz/ws");
 
     socket.onopen = () => {

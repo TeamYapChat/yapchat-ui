@@ -10,10 +10,6 @@ async function initApp() {
   //const res = await fetch("/config.json");
   //const config = await res.json();
 
-  // console.log("window type:", typeof window);
-  // console.log("Runtime Config:", window.__RUNTIME_CONFIG__);
-  // console.log("Clerk Key:", window.__RUNTIME_CONFIG__?.CLERK_PUBLISHABLE_KEY);
-
   // Force lightmode
   document.documentElement.classList.remove("dark");
   document.documentElement.classList.add("light");
@@ -26,12 +22,11 @@ async function initApp() {
     throw new Error("Add your Clerk Publishable Key to the .env file");
   }
 
-  // injectStore(store);
-
   createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
         <ClerkProvider
+          // TODO: Dynamically read Clerk publishable key
           publishableKey={
             "pk_test_cHJpbWFyeS1pZ3VhbmEtNzguY2xlcmsuYWNjb3VudHMuZGV2JA"
           }
