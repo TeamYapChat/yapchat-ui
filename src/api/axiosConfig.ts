@@ -2,7 +2,7 @@ import axios from "axios";
 import { getClerk } from "../lib/clerk";
 
 // TODO: Dynamically read base URL
-const baseUrl = "https://api.yapchat.xyz";
+const baseUrl = "https://api.yapchat.fallenlight.xyz";
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -21,14 +21,14 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     } else {
       console.log(
-        "Request Interceptor: No token found, Authorization header not added"
+        "Request Interceptor: No token found, Authorization header not added",
       );
     }
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -39,15 +39,15 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       console.error(
         "Response Interceptor: Error Response Data",
-        error.response.data
+        error.response.data,
       );
       console.error(
         "Response Interceptor: Error Response Status",
-        error.response.status
+        error.response.status,
       );
       console.error(
         "Response Interceptor: Error Response Headers",
-        error.response.headers
+        error.response.headers,
       );
     } else if (error.request) {
       console.error("Response Interceptor: Error Request Data", error.request);
@@ -63,7 +63,7 @@ axiosInstance.interceptors.response.use(
 
     // Reject the error with the response data for other cases
     return Promise.reject(error.response?.data || error.message || error); // Ensure something is rejected
-  }
+  },
 );
 
 export default axiosInstance;

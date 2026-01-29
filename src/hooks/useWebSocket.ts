@@ -13,7 +13,7 @@ export const useChatSocket = () => {
 
     const token = await clerk.session?.getToken();
 
-    ws.current = new WebSocket(`wss://api.yapchat.xyz/ws`);
+    ws.current = new WebSocket(`wss://api.yapchat.fallenlight.xyz/ws`);
 
     ws.current.onopen = async () => {
       console.log("🟢 WebSocket connected");
